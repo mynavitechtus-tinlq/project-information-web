@@ -1,0 +1,17 @@
+# Validate content before committing
+pre-commit:
+  commands:
+    lint:
+      glob: '*'
+      run: npx --no -- eslint --fix --no-warn-ignored {staged_files}
+      stage_fixed: true
+      priority: 1
+    format:
+      glob: '*.{js,jsx,ts,tsx,json,css,scss,md,yml,yaml}'
+      run: npx --no -- prettier --write {staged_files}
+      stage_fixed: true
+      priority: 2
+    check-types:
+      glob: '*.{ts,tsx}'
+      run: npm run check:types
+      priority: 3

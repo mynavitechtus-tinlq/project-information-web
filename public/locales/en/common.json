@@ -1,0 +1,10 @@
+{
+  "app_name": "Account Console",
+  "title": "Home",
+  "logout": "Logout",
+  "user_management": "User Management",
+  "mail_address": "Mail address",
+  "password": "Password",
+  "page_not_found": "Opps! Page not found.",
+  "go_home": "Go Home"
+}

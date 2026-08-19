@@ -1,0 +1,18 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nals-fe-reactjs:latest
+    container_name: nals-fe-reactjs
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env.production
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--spider', 'http://localhost:3000']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

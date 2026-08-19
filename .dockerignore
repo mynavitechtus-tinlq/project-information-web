@@ -1,0 +1,32 @@
+# dependency directories
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# build output
+.next
+out
+dist
+coverage
+
+# local tooling
+.husky
+.vscode
+.idea
+
+# misc
+.git
+.gitignore
+Dockerfile*
+docker-compose*
+.env.local
+.env.development
+.env.test
+.env
+
+# playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

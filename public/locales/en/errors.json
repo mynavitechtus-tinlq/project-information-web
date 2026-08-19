@@ -1,0 +1,13 @@
+{
+  "401": "Unauthorized",
+  "403": "Forbidden",
+  "404": "Not found",
+  "422": "Unprocessable entity",
+  "500": "Internal server error",
+  "unique": "The {label} has already been taken",
+  "email": "The {label} field must be a valid email",
+  "required": "The {label} is required",
+  "confirmed": "The {label} does not match",
+  "password": "The password you entered has an incorrect format",
+  "wrong_email_password": "The email or password you entered is incorrect."
+}
