@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wireframe — Hệ thống Quản lý Dự án, Tech Stack & Bảo mật</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --ink-2:#555; --ink-3:#888;
+    --line:#c9ccd1; --line-2:#e4e6e9;
+    --bg:#ffffff; --bg-2:#f6f7f8; --bg-3:#eceef0;
+    --accent:#2b3a55; --accent-soft:#dfe4ec;
+    --warn:#8a5a00; --warn-bg:#fdf3dd;
+    --danger:#8a1f1f; --danger-bg:#fbe9e9;
+    --ok:#1f5c35; --ok-bg:#e7f3ea;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg-3);font-size:14px;line-height:1.5}
+  .app{display:flex;min-height:100vh}
+
+  /* ---- Screen picker ---- */
+  .picker{width:260px;flex:0 0 260px;background:var(--accent);color:#fff;padding:16px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+  .picker h1{font-size:13px;margin:0 16px 4px;letter-spacing:.02em}
+  .picker .sub{font-size:11px;color:#a9b4c7;margin:0 16px 16px}
+  .picker .grp{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#8c9ab3;margin:14px 16px 4px}
+  .picker button{display:block;width:100%;text-align:left;background:none;border:0;color:#dbe2ee;padding:6px 16px;font-size:12.5px;cursor:pointer;font-family:inherit;border-left:3px solid transparent}
+  .picker button:hover{background:rgba(255,255,255,.07)}
+  .picker button.on{background:rgba(255,255,255,.13);color:#fff;border-left-color:#fff;font-weight:600}
+  .picker .id{font-family:var(--mono);font-size:10.5px;color:#8c9ab3;display:block}
+  .picker .foot{margin:20px 16px 0;font-size:10.5px;color:#8c9ab3;border-top:1px solid rgba(255,255,255,.15);padding-top:12px}
+
+  /* ---- Stage ---- */
+  .stage{flex:1;padding:20px 24px 60px;min-width:0}
+  .meta{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--ink-2)}
+  .meta b{color:var(--ink);font-family:var(--mono);font-size:12px}
+  .meta .route{font-family:var(--mono);background:var(--bg-2);padding:1px 5px;border-radius:3px}
+  .meta .note{margin-top:6px;color:var(--ink-3);font-size:11.5px}
+
+  .frame{background:var(--bg);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .frame.centered{max-width:460px;margin:0 auto}
+
+  /* ---- Chrome (nav) ---- */
+  .topbar{display:flex;align-items:center;gap:20px;border-bottom:1px solid var(--line);padding:0 16px;background:var(--bg-2)}
+  .brand{font-weight:700;font-size:12.5px;padding:12px 0;color:var(--accent)}
+  .topnav{display:flex;gap:2px;flex:1}
+  .topnav span{padding:12px 12px;font-size:12.5px;color:var(--ink-2);border-bottom:2px solid transparent}
+  .topnav span.on{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+  .topnav span.adm::after{content:" ●";color:var(--danger);font-size:9px;vertical-align:middle}
+  .who{font-size:12px;color:var(--ink-2);padding:12px 0}
+  .who .role{background:var(--accent-soft);color:var(--accent);border-radius:3px;padding:1px 6px;font-size:10.5px;margin-left:6px}
+
+  .crumb{padding:8px 16px;font-size:11.5px;color:var(--ink-3);border-bottom:1px solid var(--line-2)}
+  .crumb a{color:var(--ink-2)}
+  .body{padding:16px}
+
+  h2.page{font-size:17px;margin:0 0 2px}
+  .subline{font-size:12px;color:var(--ink-3);margin:0 0 14px}
+  .rowhead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+
+  /* ---- Controls ---- */
+  .btn{display:inline-block;border:1px solid var(--accent);background:var(--accent);color:#fff;padding:6px 12px;border-radius:4px;font-size:12.5px;white-space:nowrap}
+  .btn.sec{background:var(--bg);color:var(--accent)}
+  .btn.ghost{background:var(--bg);color:var(--ink-2);border-color:var(--line)}
+  .btn.off{background:var(--bg-3);color:var(--ink-3);border-color:var(--line-2)}
+  .btn.sm{padding:3px 8px;font-size:11.5px}
+  .fld{margin-bottom:12px}
+  .fld label{display:block;font-size:12px;color:var(--ink-2);margin-bottom:4px}
+  .fld label .req{color:var(--danger)}
+  .inp{border:1px solid var(--line);border-radius:4px;background:var(--bg);padding:7px 9px;font-size:12.5px;color:var(--ink-3);min-height:33px}
+  .inp.ro{background:var(--bg-3);color:var(--ink-3)}
+  .inp.sel::after{content:"▾";float:right;color:var(--ink-3)}
+  .inp.ta{min-height:60px}
+  .hint{font-size:11px;color:var(--ink-3);margin-top:3px}
+  .hint.err{color:var(--danger)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 16px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+  .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-bottom:12px;padding:10px;background:var(--bg-2);border:1px solid var(--line-2);border-radius:5px}
+  .filters .fld{margin:0;min-width:150px}
+  .chip{border:1px solid var(--line);border-radius:14px;padding:3px 10px;font-size:11.5px;background:var(--bg);color:var(--ink-2)}
+  .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+
+  /* ---- Table ---- */
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);border-bottom:1px solid var(--line);padding:7px 8px;font-weight:600;white-space:nowrap}
+  td{border-bottom:1px solid var(--line-2);padding:8px;vertical-align:top}
+  tbody tr:hover{background:var(--bg-2)}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line-2);border-radius:5px}
+  .mono{font-family:var(--mono);font-size:12px}
+  .muted{color:var(--ink-3)}
+
+  .badge{display:inline-block;border-radius:3px;padding:1px 7px;font-size:11px;border:1px solid var(--line);background:var(--bg-2);color:var(--ink-2);white-space:nowrap}
+  .badge.crit{background:var(--danger-bg);border-color:#e0b4b4;color:var(--danger);font-weight:600}
+  .badge.high{background:#fdeee0;border-color:#e6c9a8;color:#8a4b00}
+  .badge.med{background:var(--warn-bg);border-color:#e6d5a8;color:var(--warn)}
+  .badge.low{background:var(--bg-2)}
+  .badge.ok{background:var(--ok-bg);border-color:#b5d6bf;color:var(--ok)}
+  .badge.off{background:var(--bg-3);color:var(--ink-3)}
+
+  .tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin:0 0 16px}
+  .tabs span{padding:8px 14px;font-size:12.5px;color:var(--ink-2);border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tabs span.on{color:var(--ink);font-weight:600;border-bottom-color:var(--accent)}
+  .tabs .cnt{color:var(--ink-3);font-size:11px}
+
+  .card{border:1px solid var(--line-2);border-radius:5px;padding:12px;background:var(--bg)}
+  .card h3{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3)}
+  .stat{border:1px solid var(--line-2);border-radius:5px;padding:12px;background:var(--bg-2);text-align:center}
+  .stat .n{font-size:24px;font-weight:700;line-height:1.1}
+  .stat .l{font-size:11px;color:var(--ink-3);margin-top:3px}
+  .stat.alert{background:var(--danger-bg);border-color:#e0b4b4}
+  .stat.alert .n{color:var(--danger)}
+  .stat.warn{background:var(--warn-bg);border-color:#e6d5a8}
+  .stat.warn .n{color:var(--warn)}
+
+  .msg{border-radius:5px;padding:9px 12px;font-size:12.5px;margin-bottom:12px;border:1px solid}
+  .msg.err{background:var(--danger-bg);border-color:#e0b4b4;color:var(--danger)}
+  .msg.warn{background:var(--warn-bg);border-color:#e6d5a8;color:var(--warn)}
+  .msg.info{background:var(--accent-soft);border-color:#b9c4d6;color:var(--accent)}
+  .msg .code{font-family:var(--mono);font-size:10.5px;opacity:.75}
+
+  .empty{border:1px dashed var(--line);border-radius:5px;padding:26px;text-align:center;color:var(--ink-3);font-size:12.5px}
+
+  .pop{border:1px solid var(--line);border-radius:6px;background:var(--bg);max-width:520px;margin:0 auto;box-shadow:0 6px 24px rgba(0,0,0,.13)}
+  .pop .h{border-bottom:1px solid var(--line-2);padding:11px 14px;font-weight:600;font-size:13px;display:flex;justify-content:space-between}
+  .pop .b{padding:14px}
+  .pop .f{border-top:1px solid var(--line-2);padding:11px 14px;display:flex;justify-content:flex-end;gap:8px}
+  .backdrop{background:rgba(20,24,32,.28);padding:28px 16px;border-radius:0}
+
+  .pager{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;color:var(--ink-3)}
+  .pager .pages span{border:1px solid var(--line);padding:2px 8px;border-radius:3px;margin-left:3px}
+  .pager .pages span.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  .ann{margin-top:14px;border-left:3px solid var(--accent);background:var(--bg-2);padding:10px 12px;font-size:11.5px;color:var(--ink-2);border-radius:0 4px 4px 0}
+  .ann b{color:var(--ink)}
+  .ann ul{margin:6px 0 0;padding-left:18px}
+  .ann li{margin-bottom:3px}
+  .ann code{font-family:var(--mono);font-size:11px;background:var(--bg-3);padding:0 3px;border-radius:2px}
+
+  .scr{display:none}
+  .scr.on{display:block}
+  @media (max-width:900px){
+    .app{flex-direction:column}
+    .picker{width:100%;flex:none;height:auto;position:static}
+    .grid2,.grid3{grid-template-columns:1fr}
+    .grid4{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+<nav class="picker">
+  <h1>Wireframe — low fidelity</h1>
+  <p class="sub">Hệ thống Quản lý Dự án,<br>Tech Stack &amp; Bảo mật · v0.1</p>
+
+  <div class="grp">Xác thực</div>
+  <button data-s="s1" class="on"><span class="id">SCR-AUTH-10</span>Đăng nhập</button>
+  <button data-s="s2"><span class="id">SCR-AUTH-11</span>Đổi mật khẩu</button>
+
+  <div class="grp">Dashboard</div>
+  <button data-s="s3"><span class="id">SCR-DASH-10</span>Dashboard</button>
+
+  <div class="grp">Project</div>
+  <button data-s="s4"><span class="id">SCR-PRJ-10</span>Danh sách dự án</button>
+  <button data-s="s5"><span class="id">SCR-PRJ-11</span>Tạo / Sửa dự án</button>
+  <button data-s="s6"><span class="id">SCR-PRJ-20</span>Chi tiết — Thông tin</button>
+  <button data-s="s7"><span class="id">SCR-PRJ-21</span>Tab Thành viên</button>
+  <button data-s="s8"><span class="id">SCR-PRJ-22</span>Tab Tech Stack</button>
+  <button data-s="s9"><span class="id">SCR-PRJ-23</span>Popup hạng mục CN</button>
+
+  <div class="grp">Security</div>
+  <button data-s="s10"><span class="id">SCR-PRJ-24</span>Tab Bảo mật (dự án)</button>
+  <button data-s="s11"><span class="id">SCR-SEC-10</span>Danh sách lỗ hổng</button>
+  <button data-s="s12"><span class="id">SCR-SEC-11</span>Chi tiết lỗ hổng</button>
+
+  <div class="grp">Quản trị</div>
+  <button data-s="s13"><span class="id">SCR-ADM-10</span>Quản lý người dùng</button>
+  <button data-s="s14"><span class="id">SCR-ADM-11</span>Popup tài khoản</button>
+
+  <p class="foot">Bản vẽ bố cục, <b>không phải</b> thiết kế giao diện cuối. Màu sắc chỉ để phân biệt vai trò thông tin. Đối chiếu chi tiết tại các file Screen Spec 07–09.</p>
+</nav>
+
+<main class="stage">
+
+<!-- ============ SCR-AUTH-10 ============ -->
+<section class="scr on" id="s1">
+  <div class="meta"><b>SCR-AUTH-10</b> · Đăng nhập · <span class="route">/login</span> · Public
+    <div class="note">Cổng vào duy nhất. Mọi route protected chưa có phiên đều chuyển về đây.</div></div>
+  <div class="frame centered"><div class="body" style="padding:28px 24px">
+    <h2 class="page" style="text-align:center">Quản lý Dự án, Tech Stack &amp; Bảo mật</h2>
+    <p class="subline" style="text-align:center">Đăng nhập bằng tài khoản được cấp</p>
+
+    <div class="msg err"><span class="code">MSG-AUTH-001</span><br>Email hoặc mật khẩu không đúng.</div>
+
+    <div class="fld"><label>Email <span class="req">*</span></label><div class="inp">an@cty.vn</div></div>
+    <div class="fld"><label>Mật khẩu <span class="req">*</span></label><div class="inp">•••••••• &nbsp;<span style="float:right" class="muted">👁</span></div></div>
+    <div class="btn" style="width:100%;text-align:center">Đăng nhập</div>
+    <p class="hint" style="text-align:center;margin-top:14px">Quên mật khẩu? Liên hệ quản trị viên hệ thống.</p>
+  </div></div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Thông báo lỗi ở <b>banner đầu form</b>, không inline — cùng một câu cho cả email sai lẫn mật khẩu sai (<code>MSG-AUTH-001</code>), tránh lộ tài khoản nào tồn tại.</li>
+      <li>Sau khi thất bại: giữ email, <b>xóa</b> ô mật khẩu, focus về ô mật khẩu.</li>
+      <li>Sai 5 lần / 15 phút → <code>MSG-AUTH-002</code>, nút Đăng nhập bị vô hiệu hóa tới khi hết khóa tạm (BR-21).</li>
+      <li>Không có luồng "quên mật khẩu" tự phục vụ — chưa có hạ tầng mail (DEC-08b).</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-AUTH-11 ============ -->
+<section class="scr" id="s2">
+  <div class="meta"><b>SCR-AUTH-11</b> · Đổi mật khẩu · <span class="route">/change-password</span> · Đã đăng nhập
+    <div class="note">Đang minh họa <b>chế độ bắt buộc</b> (lần đăng nhập đầu): thanh điều hướng ẩn, không có nút Hủy.</div></div>
+  <div class="frame centered"><div class="body" style="padding:24px">
+    <h2 class="page">Đổi mật khẩu</h2>
+    <div class="msg warn"><span class="code">MSG-INF-003</span><br>Đây là lần đăng nhập đầu tiên của bạn. Vui lòng đặt mật khẩu mới trước khi tiếp tục.</div>
+
+    <div class="fld"><label>Mật khẩu hiện tại <span class="req">*</span></label><div class="inp">••••••••</div></div>
+    <div class="fld"><label>Mật khẩu mới <span class="req">*</span></label><div class="inp">•••••••••••</div>
+      <div class="hint">✓ Ít nhất 8 ký tự &nbsp; ✓ Có chữ hoa và chữ thường &nbsp; ✗ Có ít nhất một chữ số</div></div>
+    <div class="fld"><label>Xác nhận mật khẩu mới <span class="req">*</span></label><div class="inp">•••••••••••</div>
+      <div class="hint err"><span class="code">MSG-VAL-003</span> Mật khẩu xác nhận không khớp.</div></div>
+
+    <div class="btn off" style="width:100%;text-align:center">Lưu mật khẩu</div>
+    <p class="hint" style="text-align:center;margin-top:12px"><a href="#" onclick="return false">Đăng xuất</a></p>
+  </div></div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Khối 3 dòng quy tắc cập nhật <b>theo từng ký tự gõ</b> — giảm số lần submit hỏng.</li>
+      <li>Chế độ bắt buộc: nút Hủy <b>ẩn</b>, thanh điều hướng ẩn, chỉ còn lối thoát "Đăng xuất" — tránh người dùng bị kẹt.</li>
+      <li>Sai mật khẩu hiện tại hiển thị <b>inline</b> tại ô đó (<code>MSG-VAL-008</code>), không dùng banner chung.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-DASH-10 ============ -->
+<section class="scr" id="s3">
+  <div class="meta"><b>SCR-DASH-10</b> · Dashboard · <span class="route">/</span> · Đã đăng nhập
+    <div class="note">Là <b>kênh cảnh báo duy nhất</b> vì hệ thống không gửi email (DEC-08b) — khối cảnh báo đặt trên cùng.</div></div>
+  <div class="frame">
+    <div class="topbar"><span class="brand">PROJECT · TECH · SECURITY</span>
+      <div class="topnav"><span class="on">Dashboard</span><span>Dự án</span><span>Bảo mật</span><span class="adm">Quản trị</span></div>
+      <span class="who">Nguyễn Văn An <span class="role">Admin</span></span></div>
+    <div class="body">
+      <div class="rowhead">
+        <div><h2 class="page">Tổng quan</h2><p class="subline">Số liệu tính lúc 26/08/2026 09:14 · <a href="#" onclick="return false">Làm mới</a></p></div>
+        <div><span class="chip">☐ Bao gồm dự án đã kết thúc</span><div class="hint" style="text-align:right">Đang tính 47 dự án</div></div>
+      </div>
+
+      <h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);margin:0 0 8px">Khối 1 — Cảnh báo bảo mật</h3>
+      <div class="grid3" style="gap:12px;margin-bottom:20px">
+        <div class="stat alert"><div class="n">7</div><div class="l">Lỗ hổng Critical còn mở</div></div>
+        <div class="stat warn"><div class="n">23</div><div class="l">Quá hạn trên 30 ngày</div></div>
+        <div class="stat warn"><div class="n">5</div><div class="l">Chưa gán người phụ trách</div></div>
+      </div>
+
+      <div class="grid2" style="gap:16px">
+        <div class="card"><h3>Khối 2 — Dự án theo trạng thái</h3>
+          <table><tbody>
+            <tr><td>Khởi tạo</td><td style="text-align:right"><b>4</b></td></tr>
+            <tr><td>Đang phát triển</td><td style="text-align:right"><b>18</b></td></tr>
+            <tr><td>Đang vận hành</td><td style="text-align:right"><b>21</b></td></tr>
+            <tr><td>Tạm dừng</td><td style="text-align:right"><b>4</b></td></tr>
+            <tr><td class="muted">Kết thúc <span class="muted">(không tính)</span></td><td style="text-align:right" class="muted">12</td></tr>
+          </tbody></table></div>
+
+        <div class="card"><h3>Khối 3 — Phân bố công nghệ (top)</h3>
+          <table><tbody>
+            <tr><td><span class="badge">Ngôn ngữ</span> Java</td><td style="text-align:right"><b>19</b> dự án</td></tr>
+            <tr><td><span class="badge">Ngôn ngữ</span> TypeScript</td><td style="text-align:right"><b>16</b> dự án</td></tr>
+            <tr><td><span class="badge">Framework</span> Spring Boot</td><td style="text-align:right"><b>15</b> dự án</td></tr>
+            <tr><td><span class="badge">Database</span> PostgreSQL</td><td style="text-align:right"><b>14</b> dự án</td></tr>
+            <tr><td><span class="badge">Cache</span> Redis</td><td style="text-align:right"><b>11</b> dự án</td></tr>
+          </tbody></table>
+          <p class="hint">Đếm theo tên công nghệ do các dự án tự khai báo; tên viết khác nhau sẽ được đếm riêng.</p></div>
+      </div>
+
+      <div class="card" style="margin-top:16px"><h3>Khối 4 — Lỗ hổng theo mức × trạng thái</h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Mức</th><th>Mới</th><th>Đang xử lý</th><th>Đã xử lý</th><th>Chấp nhận rủi ro</th><th>Tổng</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge crit">Critical</span></td><td>3</td><td>4</td><td>28</td><td>1</td><td><b>36</b></td></tr>
+            <tr><td><span class="badge high">High</span></td><td>9</td><td>12</td><td>54</td><td>6</td><td><b>81</b></td></tr>
+            <tr><td><span class="badge med">Medium</span></td><td>14</td><td>7</td><td>63</td><td>18</td><td><b>102</b></td></tr>
+            <tr><td><span class="badge low">Low</span></td><td>6</td><td>2</td><td>31</td><td>24</td><td><b>63</b></td></tr>
+            <tr><td><b>Tổng</b></td><td><b>32</b></td><td><b>25</b></td><td><b>176</b></td><td><b>49</b></td><td><b>282</b></td></tr>
+          </tbody></table></div></div>
+    </div>
+  </div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li><b>4 API độc lập</b>, mỗi khối một cái: lỗi một khối chỉ làm hỏng khối đó, kèm nút "Thử lại" riêng (<code>MSG-SYS-006</code>).</li>
+      <li>Khối 1 khi lỗi thì <b>không hiển thị số nào</b> — số sai ở khối cảnh báo nguy hiểm hơn không có số.</li>
+      <li>Mọi con số <b>bấm được</b> để drill-down sang danh sách đã lọc sẵn (ví dụ ô Critical → <code>/security?severity=critical&amp;status=new,in_progress</code>).</li>
+      <li>Không dùng thư viện biểu đồ — toàn bộ là bảng HTML thuần, không có tooltip/legend.</li>
+      <li>Khi mọi chỉ số cảnh báo = 0 → đổi sang <code>MSG-INF-042</code> nền trung tính, không phải ba số 0 màu đỏ.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-PRJ-10 ============ -->
+<section class="scr" id="s4">
+  <div class="meta"><b>SCR-PRJ-10</b> · Danh sách dự án · <span class="route">/projects</span> · Đã đăng nhập</div>
+  <div class="frame">
+    <div class="topbar"><span class="brand">PROJECT · TECH · SECURITY</span>
+      <div class="topnav"><span>Dashboard</span><span class="on">Dự án</span><span>Bảo mật</span><span class="adm">Quản trị</span></div>
+      <span class="who">Nguyễn Văn An <span class="role">Admin</span></span></div>
+    <div class="body">
+      <div class="rowhead"><div><h2 class="page">Dự án</h2><p class="subline">47 dự án · đang lọc theo trạng thái đang hoạt động</p></div>
+        <div style="display:flex;gap:8px"><span class="btn ghost">Kết xuất CSV</span><span class="btn">+ Tạo dự án</span></div></div>
+
+      <div class="filters">
+        <div class="fld" style="flex:1"><label>Tìm theo tên hoặc mã</label><div class="inp">thanh toán</div></div>
+        <div class="fld"><label>Trạng thái</label><div class="inp sel">4 đã chọn</div></div>
+        <div class="fld"><label>Công nghệ</label><div class="inp sel">Spring Boot</div></div>
+        <div class="fld"><label>Lỗ hổng còn mở</label><div class="inp sel">Có Critical</div></div>
+        <span class="btn ghost sm">Xóa bộ lọc</span>
+      </div>
+
+      <div class="tblwrap"><table>
+        <thead><tr><th>Mã</th><th>Tên dự án</th><th>Khách hàng</th><th>Trạng thái</th><th>TV</th><th>Lỗ hổng còn mở<br><span style="font-weight:400;text-transform:none">C / H / M / L</span></th><th>Cập nhật cuối</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">PAYGW</td><td><b>Cổng thanh toán</b></td><td>Khối Ngân hàng số</td><td><span class="badge ok">Đang vận hành</span></td><td>8</td><td><span class="badge crit">2</span> <span class="badge high">5</span> <span class="badge med">1</span> <span class="badge low">0</span></td><td class="muted">25/08/2026 16:20</td></tr>
+          <tr><td class="mono">CRM_2026</td><td><b>CRM nội bộ</b></td><td>Khối Kinh doanh</td><td><span class="badge">Đang phát triển</span></td><td>12</td><td><span class="badge crit">1</span> <span class="badge high">3</span> <span class="badge med">4</span> <span class="badge low">2</span></td><td class="muted">24/08/2026 10:05</td></tr>
+          <tr><td class="mono">HRPORTAL</td><td><b>Cổng thông tin nhân sự</b></td><td>Khối Nhân sự</td><td><span class="badge ok">Đang vận hành</span></td><td>5</td><td class="muted">—</td><td class="muted">20/08/2026 09:41</td></tr>
+          <tr><td class="mono">DATAHUB</td><td><b>Nền tảng dữ liệu tập trung</b></td><td>Khối Công nghệ</td><td><span class="badge">Tạm dừng</span></td><td>6</td><td><span class="badge crit">0</span> <span class="badge high">2</span> <span class="badge med">7</span> <span class="badge low">3</span></td><td class="muted">18/08/2026 14:12</td></tr>
+        </tbody></table></div>
+
+      <div class="pager"><span>Hiển thị 1–20 trong 47 kết quả · <span class="chip">20 / trang</span></span>
+        <span class="pages"><span class="on">1</span><span>2</span><span>3</span><span>›</span></span></div>
+    </div>
+  </div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Cột <b>Lỗ hổng còn mở</b> là tín hiệu chính của màn: bốn số theo mức, bấm được để đi thẳng tới tab Bảo mật đã lọc. Khi cả bốn = 0 hiển thị "—" thay vì <code>0 / 0 / 0 / 0</code> cho đỡ nhiễu mắt.</li>
+      <li>Bộ lọc trạng thái mặc định <b>bỏ "Kết thúc"</b> để danh sách phản ánh dự án đang sống.</li>
+      <li>Nút "+ Tạo dự án" hiển thị với <b>mọi</b> người dùng đã đăng nhập (BR-04) — không ẩn theo vai trò.</li>
+      <li>Kết xuất CSV lấy theo <b>bộ lọc</b> (47 dòng), không phải theo trang đang xem (20 dòng).</li>
+      <li>Bộ lọc ghi vào query string để chia sẻ link; Dashboard drill-down dùng chính query string này.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-PRJ-11 ============ -->
+<section class="scr" id="s5">
+  <div class="meta"><b>SCR-PRJ-11</b> · Tạo / Sửa dự án · <span class="route">/projects/:id/edit</span> · Thành viên hoặc Admin
+    <div class="note">Đang minh họa <b>chế độ sửa</b> với trạng thái "Kết thúc" bị chặn do còn lỗ hổng mở (BR-18 / DP-04).</div></div>
+  <div class="frame">
+    <div class="topbar"><span class="brand">PROJECT · TECH · SECURITY</span>
+      <div class="topnav"><span>Dashboard</span><span class="on">Dự án</span><span>Bảo mật</span><span class="adm">Quản trị</span></div>
+      <span class="who">Trần Thị Bình <span class="role">User</span></span></div>
+    <div class="crumb"><a href="#" onclick="return false">Dự án</a> / <a href="#" onclick="return false">Cổng thanh toán</a> / Sửa</div>
+    <div class="body">
+      <h2 class="page">Sửa dự án</h2><p class="subline">PAYGW — Cổng thanh toán</p>
+
+      <div class="msg err"><span class="code">MSG-BIZ-003</span><br>Không thể kết thúc dự án khi còn <b>8</b> lỗ hổng chưa xử lý. Vui lòng xử lý hoặc chấp nhận rủi ro trước.
+        <div style="margin-top:6px"><span class="btn sec sm">Xem 8 lỗ hổng còn mở →</span></div></div>
+
+      <div class="grid2">
+        <div class="fld"><label>Mã dự án <span class="req">*</span></label><div class="inp ro mono">PAYGW</div><div class="hint">Mã dự án không thay đổi được sau khi tạo.</div></div>
+        <div class="fld"><label>Tên dự án <span class="req">*</span></label><div class="inp">Cổng thanh toán</div></div>
+      </div>
+      <div class="fld"><label>Mô tả</label><div class="inp ta">Cổng thanh toán nội bộ, tích hợp với 4 ngân hàng đối tác.</div><div class="hint">62 / 1.000 ký tự</div></div>
+      <div class="grid3">
+        <div class="fld"><label>Khách hàng / đơn vị chủ quản</label><div class="inp">Khối Ngân hàng số</div></div>
+        <div class="fld"><label>Ngày bắt đầu</label><div class="inp">01/03/2025</div></div>
+        <div class="fld"><label>Ngày kết thúc <span class="req">*</span></label><div class="inp">31/08/2026</div></div>
+      </div>
+      <div class="fld" style="max-width:320px"><label>Trạng thái <span class="req">*</span></label><div class="inp sel">Kết thúc</div>
+        <div class="hint err">Còn 8 lỗ hổng đang mở — không thể chuyển sang Kết thúc.</div></div>
+
+      <h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);margin:20px 0 8px">Repository</h3>
+      <div class="tblwrap"><table>
+        <thead><tr><th style="width:24%">Tên <span class="req" style="color:var(--danger)">*</span></th><th style="width:42%">Đường dẫn <span class="req" style="color:var(--danger)">*</span></th><th>Ghi chú</th><th style="width:40px"></th></tr></thead>
+        <tbody>
+          <tr><td><div class="inp" style="min-height:28px;padding:4px 7px">paygw-api</div></td><td><div class="inp mono" style="min-height:28px;padding:4px 7px">https://git.cty.vn/paygw/api</div></td><td><div class="inp" style="min-height:28px;padding:4px 7px">Dịch vụ chính</div></td><td style="text-align:center" class="muted">✕</td></tr>
+          <tr><td><div class="inp" style="min-height:28px;padding:4px 7px">paygw-web</div></td><td><div class="inp mono" style="min-height:28px;padding:4px 7px">git.cty.vn/paygw/web</div><div class="hint err"><span class="code">MSG-VAL-010</span> Đường dẫn phải bắt đầu bằng http:// hoặc https://</div></td><td><div class="inp" style="min-height:28px;padding:4px 7px"></div></td><td style="text-align:center" class="muted">✕</td></tr>
+        </tbody></table></div>
+      <div style="margin-top:8px"><span class="btn ghost sm">+ Thêm repository</span></div>
+
+      <div style="margin-top:22px;display:flex;gap:8px"><span class="btn off">Lưu</span><span class="btn ghost">Hủy</span></div>
+    </div>
+  </div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Chọn <b>trang đầy</b> thay vì popup vì có bảng repository số dòng động, và vì tạo dự án là bước mở đầu một chuỗi việc dài.</li>
+      <li><b>Ngày bắt đầu</b> và <b>Ngày kết thúc</b> là <b>hai trường riêng</b>, không gộp thành "khoảng thời gian" — theo quy tắc tách From/To của Item Type Catalog.</li>
+      <li>Ràng buộc BR-18 được cảnh báo <b>sớm</b> ngay khi chọn "Kết thúc", trước cả khi bấm Lưu — tiết kiệm một vòng thử-sai.</li>
+      <li>Trùng URL repository chỉ <b>cảnh báo vàng</b> (<code>MSG-VAL-019</code>), không chặn; trùng <b>tên</b> mới chặn (<code>MSG-VAL-018</code>).</li>
+      <li>Lưu thất bại thì <b>ở lại màn</b>, giữ nguyên mọi dữ liệu đã nhập kể cả các dòng repository.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-PRJ-20 ============ -->
+<section class="scr" id="s6">
+  <div class="meta"><b>SCR-PRJ-20</b> · Chi tiết dự án — tab Thông tin · <span class="route">/projects/:id</span> · Đã đăng nhập</div>
+  <div class="frame">
+    <div class="topbar"><span class="brand">PROJECT · TECH · SECURITY</span>
+      <div class="topnav"><span>Dashboard</span><span class="on">Dự án</span><span>Bảo mật</span><span class="adm">Quản trị</span></div>
+      <span class="who">Trần Thị Bình <span class="role">User</span></span></div>
+    <div class="crumb"><a href="#" onclick="return false">Dự án</a> / Cổng thanh toán</div>
+    <div class="body">
+      <div class="rowhead"><div><h2 class="page"><span class="mono muted">PAYGW</span> · Cổng thanh toán <span class="badge ok">Đang vận hành</span></h2>
+        <p class="subline">Khối Ngân hàng số · bắt đầu 01/03/2025</p></div><span class="btn sec">Sửa</span></div>
+
+      <div class="grid3" style="gap:12px;margin-bottom:18px">
+        <div class="stat"><div class="n">8</div><div class="l">Thành viên</div></div>
+        <div class="stat"><div class="n">11</div><div class="l">Hạng mục công nghệ</div></div>
+        <div class="stat alert"><div class="n">8</div><div class="l">Lỗ hổng còn mở</div></div>
+      </div>
+
+      <div class="tabs"><span class="on">Thông tin</span><span>Thành viên <span class="cnt">(8)</span></span><span>Tech Stack <span class="cnt">(11)</span></span><span>Bảo mật <span class="cnt">(8)</span></span></div>
+
+      <div class="grid2" style="gap:16px">
+        <div class="card"><h3>Thông tin chung</h3>
+          <table><tbody>
+            <tr><td class="muted" style="width:42%">Mô tả</td><td>Cổng thanh toán nội bộ, tích hợp với 4 ngân hàng đối tác.</td></tr>
+            <tr><td class="muted">Khách hàng</td><td>Khối Ngân hàng số</td></tr>
+            <tr><td class="muted">Ngày bắt đầu</td><td>01/03/2025</td></tr>
+            <tr><td class="muted">Ngày kết thúc</td><td class="muted">—</td></tr>
+            <tr><td class="muted">Người tạo</td><td>Trần Thị Bình · 01/03/2025</td></tr>
+            <tr><td class="muted">Cập nhật cuối</td><td>Lê Văn Cường · 25/08/2026 16:20</td></tr>
+          </tbody></table></div>
+
+        <div class="card"><h3>Repository</h3>
+          <table><tbody>
+            <tr><td><b>paygw-api</b><div class="hint">Dịch vụ chính</div></td><td class="mono"><a href="#" onclick="return false">git.cty.vn/paygw/api ↗</a></td></tr>
+            <tr><td><b>paygw-web</b></td><td class="mono"><a href="#" onclick="return false">git.cty.vn/paygw/web ↗</a></td></tr>
+            <tr><td><b>paygw-batch</b></td><td class="mono"><a href="#" onclick="return false">git.cty.vn/paygw/batch ↗</a></td></tr>
+          </tbody></table></div>
+      </div>
+    </div>
+  </div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Ba ô chỉ số ở trên cùng để người đọc quyết định đi vào tab nào — mỗi ô bấm được để chuyển tab tương ứng.</li>
+      <li>Nút <b>Sửa</b> ẩn hoàn toàn khi người dùng không có quyền ghi; nội dung vẫn đọc được đầy đủ.</li>
+      <li>Trường rỗng hiển thị dấu <b>"—"</b> chứ không để trống hẳn, để phân biệt "chưa nhập" với "lỗi hiển thị".</li>
+      <li>Nếu API tổng hợp lỗi mà API chi tiết vẫn tốt: ba ô hiện "—", nhãn tab không có số, phần còn lại bình thường.</li>
+      <li>Bấm breadcrumb "Dự án" quay về danh sách <b>giữ nguyên</b> bộ lọc và số trang trước đó.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-PRJ-21 ============ -->
+<section class="scr" id="s7">
+  <div class="meta"><b>SCR-PRJ-21</b> · Tab Thành viên · <span class="route">/projects/:id/members</span> · Ghi: thành viên hoặc Admin</div>
+  <div class="frame">
+    <div class="topbar"><span class="brand">PROJECT · TECH · SECURITY</span>
+      <div class="topnav"><span>Dashboard</span><span class="on">Dự án</span><span>Bảo mật</span><span class="adm">Quản trị</span></div>
+      <span class="who">Trần Thị Bình <span class="role">User</span></span></div>
+    <div class="crumb"><a href="#" onclick="return false">Dự án</a> / <a href="#" onclick="return false">Cổng thanh toán</a> / Thành viên</div>
+    <div class="body">
+      <div class="rowhead"><div><h2 class="page">Cổng thanh toán</h2><p class="subline">Thêm thành viên đồng nghĩa với việc trao quyền sửa dữ liệu dự án.</p></div></div>
+      <div class="tabs"><span>Thông tin</span><span class="on">Thành viên <span class="cnt">(8)</span></span><span>Tech Stack <span class="cnt">(11)</span></span><span>Bảo mật <span class="cnt">(8)</span></span></div>
+
+      <div class="filters" style="align-items:flex-end">
+        <div class="fld" style="flex:1"><label>Chọn người dùng <span class="req">*</span></label><div class="inp sel">Phạm Minh Đức — duc.pm@cty.vn</div></div>
+        <div class="fld"><label>Vai trò trong dự án <span class="req">*</span></label><div class="inp sel">Dev</div></div>
+        <div class="fld"><label>Ngày tham gia</label><div class="inp">26/08/2026</div></div>
+        <span class="btn">Thêm</span><span class="btn ghost">Hủy</span>
+      </div>
+      <p class="hint" style="margin:-4px 0 12px">Vai trò dùng để ghi nhận trách nhiệm; mọi thành viên đều có quyền sửa dữ liệu dự án.</p>
+
+      <div class="tblwrap"><table>
+        <thead><tr><th>Họ tên</th><th>Email</th><th>Vai trò trong dự án</th><th>Vai trò hệ thống</th><th>Ngày tham gia</th><th style="width:80px"></th></tr></thead>
+        <tbody>
+          <tr><td><b>Trần Thị Bình</b></td><td class="mono">binh.tt@cty.vn</td><td><div class="inp sel" style="min-height:26px;padding:3px 7px">PM</div></td><td><span class="badge">User</span></td><td>01/03/2025</td><td class="muted" style="text-align:center">✕<div class="hint">Không xóa được<br>PM cuối</div></td></tr>
+          <tr><td><b>Lê Văn Cường</b></td><td class="mono">cuong.lv@cty.vn</td><td><div class="inp sel" style="min-height:26px;padding:3px 7px">Tech Lead</div></td><td><span class="badge">User</span></td><td>05/03/2025</td><td style="text-align:center">✕</td></tr>
+          <tr><td><b>Nguyễn Văn An</b></td><td class="mono">an@cty.vn</td><td><div class="inp sel" style="min-height:26px;padding:3px 7px">Dev</div></td><td><span class="badge crit">Admin</span></td><td>12/04/2025</td><td style="text-align:center">✕</td></tr>
+          <tr><td><b>Hoàng Thị Dung</b> <span class="badge off">Tài khoản đã khóa</span></td><td class="mono">dung.ht@cty.vn</td><td><div class="inp sel" style="min-height:26px;padding:3px 7px">QA</div></td><td><span class="badge">User</span></td><td>20/06/2025</td><td style="text-align:center">✕</td></tr>
+        </tbody></table></div>
+
+      <div class="msg err" style="margin-top:14px"><span class="code">MSG-BIZ-050</span><br>Không thể xóa <b>Lê Văn Cường</b> khỏi dự án vì đang phụ trách <b>3</b> lỗ hổng chưa xử lý. Vui lòng gán người phụ trách khác trước.
+        <div style="margin-top:6px"><span class="btn sec sm">Xem 3 lỗ hổng →</span></div></div>
+    </div>
+  </div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Khối thêm là <b>khối inline</b> phía trên bảng, không phải popup — sau khi thêm xong khối <b>giữ nguyên mở</b> và xóa ô chọn người, vì thường thêm nhiều người liên tiếp.</li>
+      <li>Cột "Vai trò trong dự án" và "Vai trò hệ thống" đặt <b>cạnh nhau có chủ ý</b>, để làm rõ đây là hai khái niệm khác nhau — đây là điểm dễ hiểu nhầm nhất của màn.</li>
+      <li>Đổi vai trò <b>lưu ngay</b> khi chọn, không cần nút Lưu riêng.</li>
+      <li>Tài khoản bị khóa <b>vẫn giữ</b> tư cách thành viên (BR-23), chỉ gắn nhãn để PM biết cần gán lại việc.</li>
+      <li>PM cuối cùng: nút xóa và ô vai trò bị <b>vô hiệu hóa kèm tooltip</b> (BR-08), không ẩn.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-PRJ-22 ============ -->
+<section class="scr" id="s8">
+  <div class="meta"><b>SCR-PRJ-22</b> · Tab Tech Stack · <span class="route">/projects/:id/tech-stack</span> · Ghi: thành viên hoặc Admin</div>
+  <div class="frame">
+    <div class="topbar"><span class="brand">PROJECT · TECH · SECURITY</span>
+      <div class="topnav"><span>Dashboard</span><span class="on">Dự án</span><span>Bảo mật</span><span class="adm">Quản trị</span></div>
+      <span class="who">Trần Thị Bình <span class="role">User</span></span></div>
+    <div class="crumb"><a href="#" onclick="return false">Dự án</a> / <a href="#" onclick="return false">Cổng thanh toán</a> / Tech Stack</div>
+    <div class="body">
+      <div class="rowhead"><div><h2 class="page">Cổng thanh toán</h2><p class="subline">11 hạng mục công nghệ</p></div><span class="btn">+ Thêm hạng mục</span></div>
+      <div class="tabs"><span>Thông tin</span><span>Thành viên <span class="cnt">(8)</span></span><span class="on">Tech Stack <span class="cnt">(11)</span></span><span>Bảo mật <span class="cnt">(8)</span></span></div>
+
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+        <span class="chip on">Tất cả (11)</span><span class="chip">Ngôn ngữ (2)</span><span class="chip">Framework (3)</span><span class="chip">Database (2)</span><span class="chip">Cache (1)</span><span class="chip">Cloud (3)</span></div>
+
+      <div class="tblwrap"><table>
+        <thead><tr><th style="width:26%">Tên công nghệ</th><th style="width:14%">Phiên bản</th><th>Ghi chú</th><th style="width:24%">Sửa cuối</th><th style="width:70px"></th></tr></thead>
+        <tbody>
+          <tr><td colspan="5" style="background:var(--bg-2);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);font-weight:600">Ngôn ngữ</td></tr>
+          <tr><td>Java</td><td class="mono">17</td><td class="muted">—</td><td class="muted">Lê Văn Cường · 12/06/2026</td><td style="text-align:center" class="muted">✎ ✕</td></tr>
+          <tr><td>TypeScript</td><td class="mono">5.4.2</td><td class="muted">—</td><td class="muted">Lê Văn Cường · 12/06/2026</td><td style="text-align:center" class="muted">✎ ✕</td></tr>
+          <tr><td colspan="5" style="background:var(--bg-2);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);font-weight:600">Framework</td></tr>
+          <tr><td>Spring Boot <span class="badge crit">2 lỗ hổng</span></td><td class="mono">2.7.11</td><td class="muted">—</td><td class="muted">Nguyễn Văn An · 02/08/2026</td><td style="text-align:center" class="muted">✎ ✕</td></tr>
+          <tr><td>log4j-core <span class="badge crit">1 lỗ hổng</span></td><td class="mono">2.14.1</td><td>Phụ thuộc gián tiếp</td><td class="muted">Nguyễn Văn An · 02/08/2026</td><td style="text-align:center" class="muted">✎ ✕</td></tr>
+          <tr><td>Next.js</td><td class="mono">14.1.0</td><td class="muted">—</td><td class="muted">Lê Văn Cường · 12/06/2026</td><td style="text-align:center" class="muted">✎ ✕</td></tr>
+          <tr><td colspan="5" style="background:var(--bg-2);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);font-weight:600">Database</td></tr>
+          <tr><td>PostgreSQL</td><td class="mono">15.4</td><td>Cụm chính + 1 replica</td><td class="muted">Lê Văn Cường · 12/06/2026</td><td style="text-align:center" class="muted">✎ ✕</td></tr>
+        </tbody></table></div>
+      <p class="hint" style="margin-top:8px">Dữ liệu do thành viên dự án tự khai báo; hệ thống không tự quét mã nguồn.</p>
+    </div>
+  </div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Nhóm theo <b>5 loại cố định</b> bằng tiêu đề phụ trong cùng một bảng, không tách thành 5 bảng riêng.</li>
+      <li>Nhãn <span class="badge crit">n lỗ hổng</span> nối tech stack với khối bảo mật — đối chiếu <b>theo tên thư viện dạng văn bản</b>, nên tooltip ghi rõ "có thể chưa đầy đủ" thay vì để người dùng tin tuyệt đối (xem Q-ENT-05).</li>
+      <li>Phiên bản hiển thị bằng <b>chữ đều (monospace)</b> để dễ so sánh <code>2.17.1</code> với <code>2.7.11</code> khi đối chiếu CVE.</li>
+      <li>Gỡ hạng mục đang có lỗ hổng liên quan chỉ <b>cảnh báo</b> (<code>MSG-BIZ-011</code>), không chặn — điểm dễ implement nhầm.</li>
+      <li>Ghi chú cuối bảng đặt kỳ vọng đúng: đây là registry nhập tay, không phải scanner (DEC-02).</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-PRJ-23 ============ -->
+<section class="scr" id="s9">
+  <div class="meta"><b>SCR-PRJ-23</b> · Popup thêm / sửa hạng mục công nghệ · <b>Modal / Dialog</b> (có backdrop, focus trap) · Từ SCR-PRJ-22</div>
+  <div class="frame"><div class="backdrop">
+    <div class="pop">
+      <div class="h"><span>Thêm hạng mục công nghệ</span><span class="muted">✕</span></div>
+      <div class="b">
+        <div class="fld"><label>Loại <span class="req">*</span></label><div class="inp sel">Framework</div></div>
+        <div class="fld"><label>Tên công nghệ <span class="req">*</span></label><div class="inp">Spring Boot</div>
+          <div class="hint err"><span class="code">MSG-BIZ-010</span> Dự án đã có hạng mục Framework tên Spring Boot. <a href="#" onclick="return false">Sửa hạng mục đó →</a></div></div>
+        <div class="fld"><label>Phiên bản <span class="req">*</span></label><div class="inp mono">3.2.1</div></div>
+        <div class="fld"><label>Ghi chú</label><div class="inp"></div><div class="hint">0 / 200 ký tự</div></div>
+      </div>
+      <div class="f"><span class="btn ghost">Hủy</span><span class="btn sec">Lưu và thêm tiếp</span><span class="btn off">Lưu</span></div>
+    </div>
+  </div></div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li><b>Modal / Dialog</b> đúng nghĩa: có backdrop, chặn tương tác phía sau, có focus trap. Escape và click backdrop hành xử <b>giống hệt</b> nút Hủy, kể cả phần xác nhận khi form dirty.</li>
+      <li>Nút <b>"Lưu và thêm tiếp"</b> (chỉ ở chế độ tạo): lưu xong giữ popup mở, xóa Tên/Phiên bản/Ghi chú nhưng <b>giữ nguyên ô Loại</b> và focus về ô Tên — vì khai báo tech stack thường làm hàng loạt.</li>
+      <li>Ô Loại được <b>điền sẵn</b> theo bộ lọc đang chọn ở màn cha, tiết kiệm một thao tác.</li>
+      <li>Ô Tên có gợi ý từ các tên đã dùng trong hệ thống nhưng <b>vẫn cho nhập tự do</b> — giảm nhẹ vấn đề "PostgreSQL" vs "Postgres" (Q-ENT-04), không giải quyết triệt để.</li>
+      <li>Lưu thất bại thì popup <b>không đóng</b>, dữ liệu giữ nguyên, lỗi hiển thị inline tại ô gây ra nó.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-PRJ-24 ============ -->
+<section class="scr" id="s10">
+  <div class="meta"><b>SCR-PRJ-24</b> · Tab Bảo mật theo dự án · <span class="route">/projects/:id/security</span> · Ghi: thành viên hoặc Admin</div>
+  <div class="frame">
+    <div class="topbar"><span class="brand">PROJECT · TECH · SECURITY</span>
+      <div class="topnav"><span>Dashboard</span><span class="on">Dự án</span><span>Bảo mật</span><span class="adm">Quản trị</span></div>
+      <span class="who">Trần Thị Bình <span class="role">User</span></span></div>
+    <div class="crumb"><a href="#" onclick="return false">Dự án</a> / <a href="#" onclick="return false">Cổng thanh toán</a> / Bảo mật</div>
+    <div class="body">
+      <div class="rowhead"><div><h2 class="page">Cổng thanh toán</h2><p class="subline">8 lỗ hổng còn mở</p></div><span class="btn">+ Ghi nhận lỗ hổng</span></div>
+      <div class="tabs"><span>Thông tin</span><span>Thành viên <span class="cnt">(8)</span></span><span>Tech Stack <span class="cnt">(11)</span></span><span class="on">Bảo mật <span class="cnt">(8)</span></span></div>
+
+      <div class="grid4" style="margin-bottom:14px">
+        <div class="stat alert"><div class="n">2</div><div class="l">Critical còn mở</div></div>
+        <div class="stat warn"><div class="n">5</div><div class="l">High còn mở</div></div>
+        <div class="stat"><div class="n">1</div><div class="l">Medium còn mở</div></div>
+        <div class="stat"><div class="n">0</div><div class="l">Low còn mở</div></div>
+      </div>
+
+      <div class="filters">
+        <div class="fld"><label>Mức nghiêm trọng</label><div style="display:flex;gap:5px"><span class="chip on">Critical</span><span class="chip on">High</span><span class="chip">Medium</span><span class="chip">Low</span></div></div>
+        <div class="fld"><label>Trạng thái xử lý</label><div style="display:flex;gap:5px"><span class="chip on">Mới</span><span class="chip on">Đang xử lý</span><span class="chip">Đã xử lý</span><span class="chip">Chấp nhận rủi ro</span></div></div>
+      </div>
+
+      <div class="tblwrap"><table>
+        <thead><tr><th>Mức</th><th>Mã CVE</th><th>Thư viện</th><th>Phiên bản</th><th>Trạng thái</th><th>Người phụ trách</th><th>Ngày ghi nhận</th><th>Số ngày mở</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge crit">Critical</span></td><td class="mono">CVE-2024-12345</td><td>log4j-core</td><td class="mono">2.14.1</td><td><span class="badge">Đang xử lý</span></td><td>Lê Văn Cường</td><td>02/08/2026</td><td><b style="color:var(--warn)">24</b></td></tr>
+          <tr><td><span class="badge crit">Critical</span></td><td class="mono">CVE-2026-00891</td><td>spring-web</td><td class="mono">5.3.27</td><td><span class="badge">Mới</span></td><td class="muted" style="color:var(--warn)">Chưa gán</td><td>21/08/2026</td><td>5</td></tr>
+          <tr><td><span class="badge high">High</span></td><td class="mono">CVE-2025-33012</td><td>jackson-databind</td><td class="mono">2.13.4</td><td><span class="badge">Đang xử lý</span></td><td>Lê Văn Cường</td><td>10/07/2026</td><td><b style="color:var(--warn)">47</b></td></tr>
+          <tr><td><span class="badge high">High</span></td><td class="mono">CVE-2026-01144</td><td>next</td><td class="mono">14.1.0</td><td><span class="badge">Mới</span></td><td>Nguyễn Văn An</td><td>18/08/2026</td><td>8</td></tr>
+        </tbody></table></div>
+      <div class="pager"><span>Hiển thị 1–8 trong 8 kết quả</span><span class="pages"><span class="on">1</span></span></div>
+    </div>
+  </div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Bản thu hẹp của SCR-SEC-10 vào một dự án — <b>không có cột Dự án</b> vì thừa trong ngữ cảnh này.</li>
+      <li>"Chưa gán" hiển thị màu cam thay vì để trống: lỗ hổng không ai phụ trách là một tín hiệu cần thấy.</li>
+      <li>Số ngày mở &gt; 30 hiển thị màu cam — cùng ngưỡng với ô "quá hạn" trên Dashboard.</li>
+      <li>Khi dự án ở trạng thái <b>Kết thúc</b>: nút "+ Ghi nhận lỗ hổng" ẩn, kèm banner giải thích rằng lỗ hổng của dự án này không tính vào Dashboard (BR-19).</li>
+      <li>Bốn ô tóm tắt bấm được để áp bộ lọc mức tương ứng vào bảng bên dưới.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-SEC-10 ============ -->
+<section class="scr" id="s11">
+  <div class="meta"><b>SCR-SEC-10</b> · Danh sách lỗ hổng toàn hệ thống · <span class="route">/security</span> · Đã đăng nhập
+    <div class="note">Đang minh họa <b>chế độ gom nhóm theo CVE</b> (DEC-04) — trả lời "một CVE ảnh hưởng bao nhiêu dự án".</div></div>
+  <div class="frame">
+    <div class="topbar"><span class="brand">PROJECT · TECH · SECURITY</span>
+      <div class="topnav"><span>Dashboard</span><span>Dự án</span><span class="on">Bảo mật</span><span class="adm">Quản trị</span></div>
+      <span class="who">Nguyễn Văn An <span class="role">Admin</span></span></div>
+    <div class="body">
+      <div class="rowhead"><div><h2 class="page">Lỗ hổng bảo mật</h2><p class="subline">57 lỗ hổng còn mở trên toàn hệ thống</p></div>
+        <div style="display:flex;gap:8px"><span class="btn ghost">Kết xuất CSV</span><span class="btn">+ Ghi nhận lỗ hổng</span></div></div>
+
+      <div class="filters">
+        <div class="fld" style="min-width:180px"><label>Tìm theo CVE hoặc thư viện</label><div class="inp"></div></div>
+        <div class="fld"><label>Dự án</label><div class="inp sel">Tất cả</div></div>
+        <div class="fld"><label>Người phụ trách</label><div class="inp sel">Tất cả</div></div>
+        <div class="fld"><label>Ngày ghi nhận từ</label><div class="inp">01/01/2026</div></div>
+        <div class="fld"><label>Ngày ghi nhận đến</label><div class="inp">26/08/2026</div></div>
+      </div>
+      <div class="filters">
+        <div class="fld"><label>Mức nghiêm trọng</label><div style="display:flex;gap:5px"><span class="chip on">Critical (7)</span><span class="chip on">High (21)</span><span class="chip">Medium (21)</span><span class="chip">Low (8)</span></div></div>
+        <div class="fld"><label>Trạng thái</label><div style="display:flex;gap:5px"><span class="chip on">Mới</span><span class="chip on">Đang xử lý</span><span class="chip">Đã xử lý</span><span class="chip">Chấp nhận rủi ro</span></div></div>
+        <div class="fld"><label>Khác</label><div style="display:flex;gap:5px"><span class="chip">☐ Chỉ quá hạn &gt;30 ngày</span><span class="chip on">☑ Gom nhóm theo CVE</span></div></div>
+      </div>
+
+      <div class="tblwrap"><table>
+        <thead><tr><th style="width:26px"></th><th>Mức</th><th>Mã CVE</th><th>Thư viện</th><th>Số dự án bị ảnh hưởng</th><th>Phân bố trạng thái</th><th>Ghi nhận sớm nhất</th></tr></thead>
+        <tbody>
+          <tr><td class="muted">▾</td><td><span class="badge crit">Critical</span></td><td class="mono"><b>CVE-2024-12345</b></td><td>log4j-core</td><td><b>7</b> dự án</td><td class="muted">2 mới · 3 đang xử lý · 2 đã xử lý</td><td>02/08/2026</td></tr>
+          <tr style="background:var(--bg-2)"><td></td><td colspan="2" class="muted" style="padding-left:26px">↳ <span class="mono">PAYGW</span> Cổng thanh toán</td><td class="mono">2.14.1</td><td><span class="badge">Đang xử lý</span></td><td colspan="2">Lê Văn Cường · <b style="color:var(--warn)">24 ngày</b></td></tr>
+          <tr style="background:var(--bg-2)"><td></td><td colspan="2" class="muted" style="padding-left:26px">↳ <span class="mono">CRM_2026</span> CRM nội bộ</td><td class="mono">2.14.0</td><td><span class="badge">Mới</span></td><td colspan="2" style="color:var(--warn)">Chưa gán · 24 ngày</td></tr>
+          <tr style="background:var(--bg-2)"><td></td><td colspan="2" class="muted" style="padding-left:26px">↳ <span class="mono">DATAHUB</span> Nền tảng dữ liệu</td><td class="mono">2.15.0</td><td><span class="badge ok">Đã xử lý</span></td><td colspan="2" class="muted">Phạm Minh Đức · —</td></tr>
+          <tr><td class="muted">▸</td><td><span class="badge high">High</span></td><td class="mono"><b>CVE-2025-33012</b></td><td>jackson-databind</td><td><b>12</b> dự án</td><td class="muted">4 mới · 5 đang xử lý · 3 đã xử lý</td><td>10/07/2026</td></tr>
+          <tr><td class="muted">▸</td><td><span class="badge high">High</span></td><td class="mono"><b>CVE-2026-01144</b></td><td>next</td><td><b>3</b> dự án</td><td class="muted">3 mới</td><td>18/08/2026</td></tr>
+        </tbody></table></div>
+      <div class="pager"><span>Hiển thị 1–20 trong 34 nhóm CVE</span><span class="pages"><span class="on">1</span><span>2</span><span>›</span></span></div>
+    </div>
+  </div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Mô hình <b>một bản ghi cho mỗi dự án</b> (DEC-04) làm mờ câu hỏi "CVE này ảnh hưởng bao nhiêu nơi" — chế độ gom nhóm là câu trả lời, dòng con tải lười khi mở rộng.</li>
+      <li>Bộ lọc trạng thái mặc định là <b>Mới + Đang xử lý</b>: người mở màn này thường quan tâm việc chưa xong.</li>
+      <li>Mỗi ô lọc mức hiển thị <b>số lượng</b> để người dùng biết trước sẽ ra bao nhiêu kết quả.</li>
+      <li><b>Ngày ghi nhận từ / đến</b> là hai trường riêng — quy tắc tách From/To.</li>
+      <li>Ba trạng thái rỗng khác nhau: lọc không ra (<code>MSG-INF-036</code>), hệ thống chưa có lỗ hổng nào (<code>MSG-INF-037</code>), và "không còn lỗ hổng nào đang mở" (<code>MSG-INF-038</code>) — câu thứ ba là tin tốt nên văn phong khác hẳn.</li>
+      <li>Kết xuất CSV ở chế độ gom nhóm vẫn xuất <b>dòng chi tiết</b>, không gom, để dữ liệu dùng được cho phân tích.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-SEC-11 ============ -->
+<section class="scr" id="s12">
+  <div class="meta"><b>SCR-SEC-11</b> · Chi tiết lỗ hổng · <span class="route">/security/:id</span> · Ghi: thành viên hoặc Admin
+    <div class="note">Đang minh họa góc nhìn của <b>User (không phải Admin)</b> với lỗ hổng mức Critical — popup chuyển trạng thái ở dưới.</div></div>
+  <div class="frame">
+    <div class="topbar"><span class="brand">PROJECT · TECH · SECURITY</span>
+      <div class="topnav"><span>Dashboard</span><span>Dự án</span><span class="on">Bảo mật</span><span>Quản trị</span></div>
+      <span class="who">Trần Thị Bình <span class="role">User</span></span></div>
+    <div class="crumb"><a href="#" onclick="return false">Bảo mật</a> / CVE-2024-12345</div>
+    <div class="body">
+      <div class="rowhead">
+        <div><h2 class="page"><span class="mono">CVE-2024-12345</span> <span class="badge crit">Critical</span> <span class="badge">Đang xử lý</span></h2>
+          <p class="subline">log4j-core 2.14.1 · dự án <span class="mono">PAYGW</span> Cổng thanh toán · mở <b style="color:var(--warn)">24 ngày</b></p></div>
+        <div style="display:flex;gap:8px"><span class="btn sec">Sửa thông tin</span><span class="btn">Chuyển trạng thái</span></div></div>
+
+      <div class="grid2" style="gap:16px">
+        <div class="card"><h3>Thông tin lỗ hổng</h3>
+          <table><tbody>
+            <tr><td class="muted" style="width:44%">Dự án</td><td><span class="mono">PAYGW</span> Cổng thanh toán</td></tr>
+            <tr><td class="muted">Thư viện ảnh hưởng</td><td>log4j-core</td></tr>
+            <tr><td class="muted">Phiên bản bị ảnh hưởng</td><td class="mono">2.14.1</td></tr>
+            <tr><td class="muted">Mức nghiêm trọng</td><td><span class="badge crit">Critical</span></td></tr>
+            <tr><td class="muted">Ngày ghi nhận</td><td>02/08/2026</td></tr>
+            <tr><td class="muted">Người phụ trách</td><td>Lê Văn Cường</td></tr>
+            <tr><td class="muted">Khuyến nghị nâng cấp</td><td>Nâng lên 2.17.1 trở lên. Kiểm tra tương thích với cấu hình appender hiện tại trước.</td></tr>
+          </tbody></table></div>
+
+        <div class="card"><h3>Lịch sử xử lý</h3>
+          <div class="tblwrap" style="border:0"><table>
+            <thead><tr><th>Thời điểm</th><th>Chuyển</th><th>Người thực hiện</th></tr></thead>
+            <tbody>
+              <tr><td>05/08/2026 09:12</td><td>Mới → <b>Đang xử lý</b><div class="hint">Đã lên kế hoạch nâng cấp trong sprint 34.</div></td><td>Lê Văn Cường</td></tr>
+              <tr><td>02/08/2026 14:40</td><td class="muted">— (ghi nhận mới) → <b>Mới</b></td><td>Nguyễn Văn An</td></tr>
+            </tbody></table></div>
+          <p class="hint">Lịch sử xử lý không thể sửa hoặc xóa.</p></div>
+      </div>
+
+      <h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);margin:22px 0 8px">Popup — Chuyển trạng thái</h3>
+      <div class="backdrop" style="border:1px solid var(--line-2);border-radius:6px">
+        <div class="pop">
+          <div class="h"><span>Chuyển trạng thái lỗ hổng</span><span class="muted">✕</span></div>
+          <div class="b">
+            <p class="hint" style="margin:0 0 10px">Trạng thái hiện tại: <b>Đang xử lý</b></p>
+            <div class="fld"><label>Trạng thái đích <span class="req">*</span></label>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span class="chip on" style="text-align:left">◉ Đã xử lý</span>
+                <span class="chip" style="text-align:left;opacity:.5">○ Chấp nhận rủi ro — <i>Chỉ quản trị viên được chấp nhận rủi ro cho lỗ hổng Critical/High</i></span>
+              </div>
+              <div class="hint">Trạng thái "Mới" không bao giờ là lựa chọn đích.</div></div>
+            <div class="fld"><label>Ngày xử lý xong <span class="req">*</span></label><div class="inp">26/08/2026</div></div>
+            <div class="fld"><label>Ghi chú cách xử lý <span class="req">*</span></label><div class="inp ta">Đã nâng log4j-core lên 2.17.1, chạy lại bộ hồi quy đầy đủ.</div></div>
+          </div>
+          <div class="f"><span class="btn ghost">Hủy</span><span class="btn">Xác nhận</span></div>
+        </div>
+      </div>
+
+      <div class="msg info" style="margin-top:14px"><span class="code">MSG-INF-020</span><br>Đã đóng lỗ hổng. Nếu bạn xử lý bằng cách nâng phiên bản, đừng quên cập nhật phiên bản trong tab Tech Stack của dự án.
+        <div style="margin-top:6px"><span class="btn sec sm">Mở tab Tech Stack →</span></div></div>
+    </div>
+  </div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Lựa chọn <b>"Chấp nhận rủi ro" hiển thị nhưng bị vô hiệu hóa</b> kèm lý do, không ẩn — người dùng cần biết việc này làm được và phải nhờ ai (BR-15 / DEC-09). Máy chủ vẫn phải chặn thật, không chỉ dựa vào giao diện.</li>
+      <li>Danh sách trạng thái đích chỉ chứa các chuyển hợp lệ theo sơ đồ BU §5.1 — <b>"Mới" không bao giờ xuất hiện</b>.</li>
+      <li>Nhãn và thông báo của ô ghi chú <b>đổi theo ngữ cảnh</b>: "Ghi chú cách xử lý" / "Lý do chấp nhận rủi ro" / "Lý do mở lại" — ba message riêng, không dùng chung một câu.</li>
+      <li>Sau khi đóng lỗ hổng, lời nhắc <code>MSG-INF-020</code> là <b>banner giữ lại</b> chứ không phải toast tự ẩn — vì hệ thống không tự cập nhật tech stack (BR-17).</li>
+      <li><b>Không có nút Xóa</b> ở bất kỳ vai trò nào (BR-13), và không có nút sửa/xóa trên dòng lịch sử (BR-14) — QA phải kiểm tra sự <i>vắng mặt</i> này.</li>
+      <li>Xung đột đồng thời dùng message riêng <code>MSG-BIZ-021</code> nêu rõ trạng thái mới, vì nhiều người cùng xử lý một lỗ hổng là chuyện thường.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-ADM-10 ============ -->
+<section class="scr" id="s13">
+  <div class="meta"><b>SCR-ADM-10</b> · Quản lý người dùng · <span class="route">/admin/users</span> · <b>Admin only — route guard</b>
+    <div class="note">User mở URL trực tiếp nhận <b>trang 403</b> với <code>MSG-AUTH-005</code>, không chuyển hướng âm thầm (EC-07).</div></div>
+  <div class="frame">
+    <div class="topbar"><span class="brand">PROJECT · TECH · SECURITY</span>
+      <div class="topnav"><span>Dashboard</span><span>Dự án</span><span>Bảo mật</span><span class="on adm">Quản trị</span></div>
+      <span class="who">Nguyễn Văn An <span class="role">Admin</span></span></div>
+    <div class="body">
+      <div class="rowhead"><div><h2 class="page">Quản lý người dùng</h2><p class="subline">152 tài khoản · 4 quản trị viên đang hoạt động</p></div><span class="btn">+ Tạo tài khoản</span></div>
+
+      <div class="filters">
+        <div class="fld" style="flex:1"><label>Tìm theo email hoặc họ tên</label><div class="inp"></div></div>
+        <div class="fld"><label>Vai trò</label><div class="inp sel">Tất cả</div></div>
+        <div class="fld"><label>Trạng thái</label><div class="inp sel">Tất cả</div></div>
+      </div>
+
+      <div class="tblwrap"><table>
+        <thead><tr><th>Email</th><th>Họ tên</th><th>Vai trò</th><th>Trạng thái</th><th>Đăng nhập gần nhất</th><th style="width:110px">Thao tác</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">an@cty.vn</td><td><b>Nguyễn Văn An</b></td><td><span class="badge crit">Admin</span></td><td><span class="badge ok">Hoạt động</span></td><td class="muted">26/08/2026 08:55</td><td class="muted">✎ 🔒 ↻</td></tr>
+          <tr><td class="mono">binh.tt@cty.vn</td><td><b>Trần Thị Bình</b></td><td><span class="badge">User</span></td><td><span class="badge ok">Hoạt động</span></td><td class="muted">25/08/2026 17:02</td><td class="muted">✎ 🔒 ↻</td></tr>
+          <tr><td class="mono">dung.ht@cty.vn</td><td><b>Hoàng Thị Dung</b></td><td><span class="badge">User</span></td><td><span class="badge off">Khóa</span></td><td class="muted">12/05/2026 11:20</td><td class="muted">✎ 🔓</td></tr>
+          <tr><td class="mono">duc.pm@cty.vn</td><td><b>Phạm Minh Đức</b></td><td><span class="badge">User</span></td><td><span class="badge ok">Hoạt động</span></td><td class="muted">Chưa đăng nhập</td><td class="muted">✎ 🔒 ↻</td></tr>
+        </tbody></table></div>
+      <div class="pager"><span>Hiển thị 1–20 trong 152 kết quả · <span class="chip">20 / trang</span></span><span class="pages"><span class="on">1</span><span>2</span><span>…</span><span>8</span><span>›</span></span></div>
+
+      <div class="msg err" style="margin-top:14px"><span class="code">MSG-BIZ-060</span><br>Không thể thực hiện: hệ thống phải luôn có ít nhất một quản trị viên đang hoạt động.</div>
+    </div>
+  </div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Ba thao tác trên mỗi dòng: <b>✎</b> sửa · <b>🔒/🔓</b> khóa hoặc mở khóa · <b>↻</b> đặt lại mật khẩu. Với Admin hoạt động cuối cùng, nút khóa bị <b>vô hiệu hóa kèm tooltip</b> (BR-05).</li>
+      <li>"Chưa đăng nhập" hiển thị bằng chữ thay vì để trống — phân biệt với lỗi hiển thị.</li>
+      <li>Tài khoản chỉ <b>khóa</b>, không xóa (BR-23): mọi dấu vết lịch sử được giữ nguyên.</li>
+      <li>Lỗi tải danh sách hiển thị <b>trong vùng bảng</b> kèm nút "Thử lại", không dùng toast — toast biến mất và người dùng ở lại với vùng trống không giải thích được.</li>
+      <li>Vì không có hạ tầng mail (DEC-08b), Admin phải <b>tự bàn giao mật khẩu tạm</b> qua kênh ngoài hệ thống.</li>
+    </ul></div>
+</section>
+
+<!-- ============ SCR-ADM-11 ============ -->
+<section class="scr" id="s14">
+  <div class="meta"><b>SCR-ADM-11</b> · Popup tạo / sửa tài khoản · <b>Modal / Dialog</b> · Admin only · Từ SCR-ADM-10</div>
+  <div class="frame"><div class="backdrop">
+    <div class="pop">
+      <div class="h"><span>Tạo tài khoản</span><span class="muted">✕</span></div>
+      <div class="b">
+        <div class="fld"><label>Email đăng nhập <span class="req">*</span></label><div class="inp mono">duc.pm@cty.vn</div>
+          <div class="hint err"><span class="code">MSG-BIZ-061</span> Email này đã được sử dụng cho một tài khoản khác.</div></div>
+        <div class="fld"><label>Họ tên <span class="req">*</span></label><div class="inp">Phạm Minh Đức</div></div>
+        <div class="fld"><label>Vai trò hệ thống <span class="req">*</span></label>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span class="chip" style="text-align:left">○ <b>Admin</b> — Toàn quyền hệ thống, quản lý tài khoản</span>
+            <span class="chip on" style="text-align:left">◉ <b>User</b> — Xem toàn hệ thống, sửa dữ liệu dự án mình tham gia</span>
+          </div></div>
+        <div class="fld"><label>Mật khẩu tạm <span class="req">*</span></label>
+          <div class="inp mono">Kx7mQ2vTp9Lw &nbsp;<span style="float:right" class="muted">👁</span></div>
+          <div class="hint">✓ Ít nhất 8 ký tự &nbsp; ✓ Có chữ hoa và chữ thường &nbsp; ✓ Có ít nhất một chữ số &nbsp; · <a href="#" onclick="return false">Sinh tự động</a></div>
+          <div class="hint">Người dùng sẽ được yêu cầu đổi mật khẩu ở lần đăng nhập đầu tiên.</div></div>
+      </div>
+      <div class="f"><span class="btn ghost">Hủy</span><span class="btn off">Lưu</span></div>
+    </div>
+  </div></div>
+  <div class="ann"><b>Ghi chú thiết kế</b>
+    <ul>
+      <li>Vai trò dùng <b>radio group kèm mô tả một dòng</b> thay vì dropdown — hai lựa chọn có hệ quả rất khác nhau, Admin cần đọc được cả hai cùng lúc trước khi chọn.</li>
+      <li>Ô Email <b>chỉ đọc ở chế độ sửa</b> — email là định danh đăng nhập.</li>
+      <li>Ô "Mật khẩu tạm" chỉ có ở <b>chế độ tạo</b>; đổi mật khẩu cho người khác là luồng riêng (nút ↻ ở danh sách).</li>
+      <li>Nút "Sinh tự động" giảm rủi ro Admin đặt mật khẩu yếu, và tự bật chế độ hiện ký tự để sao chép.</li>
+      <li>Lưu thất bại: popup <b>không đóng</b>, lỗi hiển thị inline tại ô gây ra nó, dữ liệu giữ nguyên.</li>
+      <li>Ở chế độ sửa nếu tải chi tiết thất bại, popup hiện <b>thông báo lỗi và chỉ nút Đóng</b> — không hiện form rỗng khiến Admin tưởng đang tạo mới.</li>
+    </ul></div>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var btns = document.querySelectorAll('.picker button');
+  var scrs = document.querySelectorAll('.scr');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      btns.forEach(function(x){x.classList.remove('on');});
+      scrs.forEach(function(s){s.classList.remove('on');});
+      b.classList.add('on');
+      var t = document.getElementById(b.getAttribute('data-s'));
+      if(t){ t.classList.add('on'); }
+      window.scrollTo(0,0);
+    });
+  });
+})();
+</script>
+</body>
+</html>
