@@ -130,38 +130,40 @@
 
 ## 2. Features
 
-| ID | Feature | Epic | Mô tả | UC / Screen | Stories | Ước lượng |
-|----|---------|------|-------|-------------|---------|-----------|
-| FE-01 | Đăng nhập / đăng xuất | EP-01 | Form đăng nhập, xử lý sai mật khẩu, khóa tạm, tài khoản khóa, session timeout | UC-AUTH-01/02 / SCR-AUTH-10 | US-001..004 | M |
-| FE-02 | Đổi mật khẩu | EP-01 | Đổi mật khẩu chủ động và bắt buộc lần đầu | UC-AUTH-03 / SCR-AUTH-11 | US-005..006 | S |
-| FE-03 | Quản lý tài khoản | EP-01 | Danh sách, tạo, sửa, khóa/mở khóa, đặt lại mật khẩu | UC-ADM-01 / SCR-ADM-10, 11 | US-007..010 | L |
-| FE-04 | Phân quyền vai trò & guard | EP-01 | Gán Admin/User; guard route; trang 403/404 | UC-ADM-02 / SCR-ADM-10 | US-011..012 | M |
-| FE-05 | Danh sách & tìm kiếm Project | EP-02 | Danh sách, tìm theo tên/mã, lọc theo trạng thái/công nghệ, phân trang | UC-PRJ-01 / SCR-PRJ-10 | US-013..014 | M |
-| FE-06 | Hồ sơ Project & repository | EP-02 | Tạo/sửa thông tin, trạng thái, danh sách repository | UC-PRJ-02/03 / SCR-PRJ-11, 20 | US-015..018 | L |
-| FE-07 | Thành viên Project | EP-02 | Thêm/xóa thành viên, vai trò trong dự án, ràng buộc PM | UC-PRJ-04 / SCR-PRJ-21 | US-019..021 | M |
-| FE-08 | Khai báo Tech Stack | EP-03 | CRUD hạng mục công nghệ theo 5 loại kèm phiên bản | UC-TS-01/02 / SCR-PRJ-22, 23 | US-022..024 | M |
-| FE-09 | Ghi nhận lỗ hổng | EP-04 | Form CVE: project, thư viện, phiên bản, mức, khuyến nghị, người phụ trách | UC-SEC-02 / SCR-SEC-11 | US-025..026 | M |
-| FE-10 | Luồng xử lý lỗ hổng | EP-04 | Chuyển trạng thái có ràng buộc, lịch sử bất biến, kiểm soát chấp nhận rủi ro | UC-SEC-03/04 / SCR-SEC-11 | US-027..030 | L |
-| FE-11 | Danh sách lỗ hổng | EP-04 | Toàn hệ thống + theo project, lọc mức/trạng thái, gom nhóm theo CVE | UC-SEC-01 / SCR-SEC-10, SCR-PRJ-24 | US-031..032 | M |
-| FE-12 | Dashboard tổng quan | EP-05 | Cảnh báo, thống kê dự án/công nghệ/bảo mật, drill-down | UC-DASH-01 / SCR-DASH-10 | US-033 | L |
-| FE-13 | Kết xuất CSV | EP-06 | Export danh sách lỗ hổng và dự án theo bộ lọc | UC-PRJ-05, UC-SEC-05 / SCR-PRJ-10, SCR-SEC-10 | US-034 | S |
+| ID    | Feature                      | Epic  | Mô tả                                                                         | UC / Screen                                   | Stories     | Ước lượng |
+| ----- | ---------------------------- | ----- | ----------------------------------------------------------------------------- | --------------------------------------------- | ----------- | --------- |
+| FE-01 | Đăng nhập / đăng xuất        | EP-01 | Form đăng nhập, xử lý sai mật khẩu, khóa tạm, tài khoản khóa, session timeout | UC-AUTH-01/02 / SCR-AUTH-10                   | US-001..004 | M         |
+| FE-02 | Đổi mật khẩu                 | EP-01 | Đổi mật khẩu chủ động và bắt buộc lần đầu                                     | UC-AUTH-03 / SCR-AUTH-11                      | US-005..006 | S         |
+| FE-03 | Quản lý tài khoản            | EP-01 | Danh sách, tạo, sửa, khóa/mở khóa, đặt lại mật khẩu                           | UC-ADM-01 / SCR-ADM-10, 11                    | US-007..010 | L         |
+| FE-04 | Phân quyền vai trò & guard   | EP-01 | Gán Admin/User; guard route; trang 403/404                                    | UC-ADM-02 / SCR-ADM-10                        | US-011..012 | M         |
+| FE-05 | Danh sách & tìm kiếm Project | EP-02 | Danh sách, tìm theo tên/mã, lọc theo trạng thái/công nghệ, phân trang         | UC-PRJ-01 / SCR-PRJ-10                        | US-013..014 | M         |
+| FE-06 | Hồ sơ Project & repository   | EP-02 | Tạo/sửa thông tin, trạng thái, danh sách repository                           | UC-PRJ-02/03 / SCR-PRJ-11, 20                 | US-015..018 | L         |
+| FE-07 | Thành viên Project           | EP-02 | Thêm/xóa thành viên, vai trò trong dự án, ràng buộc PM                        | UC-PRJ-04 / SCR-PRJ-21                        | US-019..021 | M         |
+| FE-08 | Khai báo Tech Stack          | EP-03 | CRUD hạng mục công nghệ theo 5 loại kèm phiên bản                             | UC-TS-01/02 / SCR-PRJ-22, 23                  | US-022..024 | M         |
+| FE-09 | Ghi nhận lỗ hổng             | EP-04 | Form CVE: project, thư viện, phiên bản, mức, khuyến nghị, người phụ trách     | UC-SEC-02 / SCR-SEC-11                        | US-025..026 | M         |
+| FE-10 | Luồng xử lý lỗ hổng          | EP-04 | Chuyển trạng thái có ràng buộc, lịch sử bất biến, kiểm soát chấp nhận rủi ro  | UC-SEC-03/04 / SCR-SEC-11                     | US-027..030 | L         |
+| FE-11 | Danh sách lỗ hổng            | EP-04 | Toàn hệ thống + theo project, lọc mức/trạng thái, gom nhóm theo CVE           | UC-SEC-01 / SCR-SEC-10, SCR-PRJ-24            | US-031..032 | M         |
+| FE-12 | Dashboard tổng quan          | EP-05 | Cảnh báo, thống kê dự án/công nghệ/bảo mật, drill-down                        | UC-DASH-01 / SCR-DASH-10                      | US-033      | L         |
+| FE-13 | Kết xuất CSV                 | EP-06 | Export danh sách lỗ hổng và dự án theo bộ lọc                                 | UC-PRJ-05, UC-SEC-05 / SCR-PRJ-10, SCR-SEC-10 | US-034      | S         |
 
 > Ước lượng tương đối: **S** ≈ 1–2 ngày · **M** ≈ 3–5 ngày · **L** ≈ 6–10 ngày, cho một cặp FE+BE. `[ASSUMED]` — cần đội phát triển hiệu chỉnh.
 
 ## 3. User Stories
 
-> Định dạng: *Là [vai trò], tôi muốn [hành động], để [giá trị]*. Mỗi story kèm tiêu chí chấp nhận GIVEN/WHEN/THEN, ưu tiên MoSCoW và mã message liên quan.
+> Định dạng: _Là [vai trò], tôi muốn [hành động], để [giá trị]_. Mỗi story kèm tiêu chí chấp nhận GIVEN/WHEN/THEN, ưu tiên MoSCoW và mã message liên quan.
 
 ### FE-01 — Đăng nhập / đăng xuất
 
 **US-001 — Đăng nhập thành công** · Must · SCR-AUTH-10
-*Là người dùng đã được cấp tài khoản, tôi muốn đăng nhập bằng email và mật khẩu, để truy cập dữ liệu dự án và bảo mật.*
+_Là người dùng đã được cấp tài khoản, tôi muốn đăng nhập bằng email và mật khẩu, để truy cập dữ liệu dự án và bảo mật._
+
 - GIVEN tài khoản `an@cty.vn` đang ở trạng thái Hoạt động và không có cờ đổi mật khẩu
 - WHEN tôi nhập đúng email và mật khẩu rồi bấm "Đăng nhập"
 - THEN hệ thống tạo phiên và chuyển tôi tới Dashboard, thanh điều hướng hiển thị tên và vai trò của tôi
 
 **US-002 — Xử lý đăng nhập sai** · Must · SCR-AUTH-10 · `MSG-AUTH-001`, `MSG-AUTH-002`
-*Là người dùng, tôi muốn được báo lỗi rõ ràng khi đăng nhập sai, để biết mình cần làm gì tiếp.*
+_Là người dùng, tôi muốn được báo lỗi rõ ràng khi đăng nhập sai, để biết mình cần làm gì tiếp._
+
 - GIVEN tôi đang ở màn Đăng nhập
 - WHEN tôi nhập sai mật khẩu
 - THEN hệ thống hiển thị `MSG-AUTH-001` phía trên form, **không** cho biết sai email hay sai mật khẩu, và giữ nguyên email đã nhập
@@ -170,13 +172,15 @@
 - THEN hệ thống khóa đăng nhập 15 phút và hiển thị `MSG-AUTH-002` kèm thời điểm có thể thử lại
 
 **US-003 — Tài khoản bị khóa không đăng nhập được** · Must · SCR-AUTH-10 · `MSG-AUTH-003`
-*Là quản trị viên, tôi muốn tài khoản đã khóa không thể đăng nhập, để kiểm soát người rời tổ chức.*
+_Là quản trị viên, tôi muốn tài khoản đã khóa không thể đăng nhập, để kiểm soát người rời tổ chức._
+
 - GIVEN tài khoản `binh@cty.vn` ở trạng thái Khóa
 - WHEN người đó nhập đúng email và mật khẩu
 - THEN hệ thống từ chối và hiển thị `MSG-AUTH-003` gợi ý liên hệ quản trị viên, không tạo phiên
 
 **US-004 — Đăng xuất và hết hạn phiên** · Must · Toàn cục · `MSG-AUTH-004`
-*Là người dùng, tôi muốn kết thúc phiên khi rời máy, để dữ liệu bảo mật không bị người khác xem.*
+_Là người dùng, tôi muốn kết thúc phiên khi rời máy, để dữ liệu bảo mật không bị người khác xem._
+
 - GIVEN tôi đang đăng nhập
 - WHEN tôi bấm "Đăng xuất" trong menu tài khoản
 - THEN phiên bị hủy và tôi về màn Đăng nhập; bấm nút Back của trình duyệt không vào lại được màn trong
@@ -187,7 +191,8 @@
 ### FE-02 — Đổi mật khẩu
 
 **US-005 — Bắt buộc đổi mật khẩu ở lần đăng nhập đầu** · Must · SCR-AUTH-11
-*Là quản trị viên, tôi muốn người dùng mới buộc phải đổi mật khẩu tạm, để không ai dùng lâu dài mật khẩu do người khác đặt.*
+_Là quản trị viên, tôi muốn người dùng mới buộc phải đổi mật khẩu tạm, để không ai dùng lâu dài mật khẩu do người khác đặt._
+
 - GIVEN tài khoản của tôi vừa được Admin tạo và có cờ "phải đổi mật khẩu"
 - WHEN tôi đăng nhập thành công
 - THEN hệ thống đưa tôi tới màn Đổi mật khẩu và **chặn** mọi route khác cho tới khi tôi đổi xong
@@ -195,7 +200,8 @@
 - THEN cờ được gỡ, tôi được chuyển tới Dashboard
 
 **US-006 — Đổi mật khẩu chủ động** · Should · SCR-AUTH-11 · `MSG-VAL-001..003`
-*Là người dùng, tôi muốn tự đổi mật khẩu bất cứ lúc nào, để giữ tài khoản an toàn.*
+_Là người dùng, tôi muốn tự đổi mật khẩu bất cứ lúc nào, để giữ tài khoản an toàn._
+
 - GIVEN tôi đang đăng nhập
 - WHEN tôi mở "Đổi mật khẩu" từ menu tài khoản, nhập đúng mật khẩu hiện tại và mật khẩu mới hợp lệ
 - THEN mật khẩu được cập nhật và tôi thấy thông báo thành công `MSG-INF-001`
@@ -207,7 +213,8 @@
 ### FE-03 — Quản lý tài khoản
 
 **US-007 — Xem và tìm kiếm danh sách tài khoản** · Must · SCR-ADM-10
-*Là quản trị viên, tôi muốn xem danh sách tài khoản kèm vai trò và trạng thái, để nắm ai đang có quyền gì.*
+_Là quản trị viên, tôi muốn xem danh sách tài khoản kèm vai trò và trạng thái, để nắm ai đang có quyền gì._
+
 - GIVEN tôi là Admin đang ở màn Quản lý người dùng
 - WHEN màn hình tải xong
 - THEN tôi thấy bảng gồm email, họ tên, vai trò, trạng thái, đăng nhập gần nhất, phân trang 20 dòng
@@ -215,7 +222,8 @@
 - THEN danh sách chỉ còn các tài khoản khớp cả hai điều kiện
 
 **US-008 — Tạo tài khoản mới** · Must · SCR-ADM-11 · `MSG-BIZ-061`
-*Là quản trị viên, tôi muốn tạo tài khoản cho thành viên mới, để họ bắt đầu dùng hệ thống.*
+_Là quản trị viên, tôi muốn tạo tài khoản cho thành viên mới, để họ bắt đầu dùng hệ thống._
+
 - GIVEN tôi là Admin
 - WHEN tôi bấm "Tạo tài khoản", nhập email, họ tên, vai trò, mật khẩu tạm và lưu
 - THEN tài khoản được tạo với cờ "phải đổi mật khẩu", xuất hiện đầu danh sách, và tôi thấy `MSG-INF-002`
@@ -223,7 +231,8 @@
 - THEN hiển thị `MSG-BIZ-061` inline dưới ô email và không gọi lưu lần nữa
 
 **US-009 — Khóa và mở khóa tài khoản** · Must · SCR-ADM-10 · `MSG-BIZ-060`
-*Là quản trị viên, tôi muốn khóa tài khoản người đã rời tổ chức, để chặn truy cập nhưng vẫn giữ lịch sử của họ.*
+_Là quản trị viên, tôi muốn khóa tài khoản người đã rời tổ chức, để chặn truy cập nhưng vẫn giữ lịch sử của họ._
+
 - GIVEN tài khoản `binh@cty.vn` đang Hoạt động và là thành viên của 3 dự án
 - WHEN tôi bấm "Khóa" và xác nhận
 - THEN trạng thái chuyển sang Khóa, người đó không đăng nhập được, nhưng tên vẫn còn trong danh sách thành viên và lịch sử lỗ hổng
@@ -232,7 +241,8 @@
 - THEN hệ thống chặn và hiển thị `MSG-BIZ-060`
 
 **US-010 — Đặt lại mật khẩu cho người dùng** · Should · SCR-ADM-11
-*Là quản trị viên, tôi muốn đặt lại mật khẩu khi người dùng quên, để họ vào lại được mà không cần hạ tầng email.*
+_Là quản trị viên, tôi muốn đặt lại mật khẩu khi người dùng quên, để họ vào lại được mà không cần hạ tầng email._
+
 - GIVEN tôi đang mở tài khoản của một người dùng
 - WHEN tôi bấm "Đặt lại mật khẩu", nhập mật khẩu tạm và xác nhận
 - THEN mật khẩu được đặt lại, cờ "phải đổi mật khẩu" được bật, và hệ thống hiển thị mật khẩu tạm **một lần duy nhất** để tôi chuyển cho người dùng
@@ -240,7 +250,8 @@
 ### FE-04 — Phân quyền vai trò & guard
 
 **US-011 — Gán vai trò hệ thống** · Must · SCR-ADM-11 · `MSG-BIZ-060`
-*Là quản trị viên, tôi muốn nâng hoặc hạ vai trò của một tài khoản, để quyền khớp với trách nhiệm thực tế.*
+_Là quản trị viên, tôi muốn nâng hoặc hạ vai trò của một tài khoản, để quyền khớp với trách nhiệm thực tế._
+
 - GIVEN tài khoản `an@cty.vn` đang là User
 - WHEN tôi đổi vai trò thành Admin và lưu
 - THEN người đó truy cập được màn Quản trị ngay ở phiên đăng nhập tiếp theo
@@ -249,7 +260,8 @@
 - THEN hệ thống chặn và hiển thị `MSG-BIZ-060`
 
 **US-012 — Chặn truy cập không đủ quyền** · Must · Toàn cục · `MSG-AUTH-005`, `MSG-NF-001`
-*Là chủ hệ thống, tôi muốn người dùng thường không vào được màn quản trị dù gõ URL trực tiếp, để bảo vệ dữ liệu tài khoản.*
+_Là chủ hệ thống, tôi muốn người dùng thường không vào được màn quản trị dù gõ URL trực tiếp, để bảo vệ dữ liệu tài khoản._
+
 - GIVEN tôi đăng nhập với vai trò User
 - WHEN tôi gõ trực tiếp `/admin/users`
 - THEN hệ thống hiển thị **trang 403** với `MSG-AUTH-005` và nút "Về Dashboard" — không chuyển hướng âm thầm
@@ -259,7 +271,8 @@
 ### FE-05 — Danh sách & tìm kiếm Project
 
 **US-013 — Tra cứu dự án** · Must · SCR-PRJ-10
-*Là kỹ sư, tôi muốn tìm nhanh một dự án theo tên hoặc mã, để mở hồ sơ của nó mà không phải cuộn cả danh sách.*
+_Là kỹ sư, tôi muốn tìm nhanh một dự án theo tên hoặc mã, để mở hồ sơ của nó mà không phải cuộn cả danh sách._
+
 - GIVEN hệ thống có 200 dự án
 - WHEN tôi gõ "thanh toán" vào ô tìm kiếm
 - THEN danh sách chỉ hiển thị các dự án có tên hoặc mã chứa chuỗi đó, không phân biệt hoa/thường và dấu tiếng Việt `[ASSUMED]`
@@ -267,7 +280,8 @@
 - THEN hiển thị trạng thái rỗng `MSG-INF-030` kèm nút xóa bộ lọc
 
 **US-014 — Lọc theo trạng thái và công nghệ** · Must · SCR-PRJ-10
-*Là quản lý kỹ thuật, tôi muốn lọc dự án đang vận hành dùng một công nghệ cụ thể, để đánh giá phạm vi ảnh hưởng khi công nghệ đó có vấn đề.*
+_Là quản lý kỹ thuật, tôi muốn lọc dự án đang vận hành dùng một công nghệ cụ thể, để đánh giá phạm vi ảnh hưởng khi công nghệ đó có vấn đề._
+
 - GIVEN tôi đang ở danh sách dự án
 - WHEN tôi chọn trạng thái = "Đang vận hành" và công nghệ = "Spring Boot"
 - THEN danh sách chỉ còn các dự án thỏa cả hai, và bộ lọc được giữ khi tôi mở một dự án rồi bấm quay lại
@@ -275,7 +289,8 @@
 ### FE-06 — Hồ sơ Project & repository
 
 **US-015 — Tạo dự án mới** · Must · SCR-PRJ-11 · `MSG-BIZ-001`, `MSG-BIZ-002`
-*Là PM, tôi muốn tạo hồ sơ dự án mới, để bắt đầu quản lý tech stack và bảo mật của nó.*
+_Là PM, tôi muốn tạo hồ sơ dự án mới, để bắt đầu quản lý tech stack và bảo mật của nó._
+
 - GIVEN tôi đã đăng nhập
 - WHEN tôi bấm "Tạo dự án", nhập mã `PAYGW`, tên "Cổng thanh toán", chọn trạng thái và lưu
 - THEN dự án được tạo, tôi tự động là thành viên với vai trò PM, và hệ thống chuyển tôi tới màn chi tiết
@@ -283,7 +298,8 @@
 - THEN hiển thị `MSG-BIZ-001` / `MSG-BIZ-002` inline dưới trường tương ứng
 
 **US-016 — Quản lý repository của dự án** · Must · SCR-PRJ-11
-*Là Dev, tôi muốn ghi các đường dẫn repository của dự án, để người mới biết mã nguồn nằm ở đâu.*
+_Là Dev, tôi muốn ghi các đường dẫn repository của dự án, để người mới biết mã nguồn nằm ở đâu._
+
 - GIVEN tôi đang sửa một dự án mình là thành viên
 - WHEN tôi bấm "Thêm repository", nhập tên và URL rồi lưu
 - THEN repository xuất hiện trong bảng ở màn chi tiết dưới dạng liên kết mở tab mới
@@ -291,7 +307,8 @@
 - THEN hiển thị `MSG-VAL-010` inline và chặn lưu
 
 **US-017 — Xem chi tiết dự án** · Must · SCR-PRJ-20
-*Là kỹ sư, tôi muốn xem toàn bộ hồ sơ một dự án ở một chỗ, để không phải hỏi từng người.*
+_Là kỹ sư, tôi muốn xem toàn bộ hồ sơ một dự án ở một chỗ, để không phải hỏi từng người._
+
 - GIVEN dự án `PAYGW` tồn tại
 - WHEN tôi mở màn chi tiết
 - THEN tôi thấy thông tin chung, danh sách repository, và bốn tab với số đếm: Thành viên (n), Tech Stack (n), Bảo mật (n lỗ hổng còn mở)
@@ -299,7 +316,8 @@
 - THEN nút "Sửa" không hiển thị nhưng mọi nội dung vẫn đọc được
 
 **US-018 — Kết thúc dự án có kiểm soát** · Must · SCR-PRJ-11 · `MSG-BIZ-003`
-*Là PM, tôi muốn không thể đóng dự án khi còn lỗ hổng chưa xử lý, để rủi ro không bị bỏ quên khi dự án khép lại.*
+_Là PM, tôi muốn không thể đóng dự án khi còn lỗ hổng chưa xử lý, để rủi ro không bị bỏ quên khi dự án khép lại._
+
 - GIVEN dự án `PAYGW` còn 3 lỗ hổng ở trạng thái Mới hoặc Đang xử lý
 - WHEN tôi đổi trạng thái sang "Kết thúc" và lưu
 - THEN hệ thống chặn, hiển thị `MSG-BIZ-003` kèm số 3 và liên kết "Xem 3 lỗ hổng còn mở"
@@ -310,7 +328,8 @@
 ### FE-07 — Thành viên Project
 
 **US-019 — Thêm thành viên vào dự án** · Must · SCR-PRJ-21 · `MSG-BIZ-052`
-*Là PM, tôi muốn thêm người vào dự án kèm vai trò, để họ có quyền cập nhật dữ liệu dự án.*
+_Là PM, tôi muốn thêm người vào dự án kèm vai trò, để họ có quyền cập nhật dữ liệu dự án._
+
 - GIVEN tôi là thành viên của dự án
 - WHEN tôi bấm "Thêm thành viên", chọn một tài khoản Hoạt động, chọn vai trò Dev và lưu
 - THEN người đó xuất hiện trong bảng và ngay lập tức có quyền ghi trên dự án
@@ -318,13 +337,15 @@
 - THEN hiển thị `MSG-BIZ-052` và không cho lưu; tài khoản Khóa không xuất hiện trong danh sách chọn
 
 **US-020 — Giữ ít nhất một PM** · Must · SCR-PRJ-21 · `MSG-BIZ-051`
-*Là chủ hệ thống, tôi muốn mỗi dự án luôn có người chịu trách nhiệm, để không có dự án vô chủ.*
+_Là chủ hệ thống, tôi muốn mỗi dự án luôn có người chịu trách nhiệm, để không có dự án vô chủ._
+
 - GIVEN dự án chỉ có một thành viên vai trò PM
 - WHEN tôi xóa người đó hoặc đổi vai trò của họ sang Dev
 - THEN hệ thống chặn và hiển thị `MSG-BIZ-051`
 
 **US-021 — Chặn xóa thành viên đang phụ trách lỗ hổng** · Must · SCR-PRJ-21 · `MSG-BIZ-050`
-*Là PM, tôi muốn không xóa nhầm người đang phụ trách một lỗ hổng chưa đóng, để việc xử lý không bị mất người chịu trách nhiệm.*
+_Là PM, tôi muốn không xóa nhầm người đang phụ trách một lỗ hổng chưa đóng, để việc xử lý không bị mất người chịu trách nhiệm._
+
 - GIVEN `an@cty.vn` đang phụ trách 2 lỗ hổng ở trạng thái Đang xử lý của dự án này
 - WHEN tôi xóa `an@cty.vn` khỏi dự án
 - THEN hệ thống chặn, hiển thị `MSG-BIZ-050` kèm danh sách 2 lỗ hổng và liên kết để gán người khác
@@ -332,7 +353,8 @@
 ### FE-08 — Khai báo Tech Stack
 
 **US-022 — Xem tech stack theo loại** · Must · SCR-PRJ-22
-*Là kỹ sư, tôi muốn thấy công nghệ của dự án nhóm theo loại, để nắm nhanh bức tranh kỹ thuật.*
+_Là kỹ sư, tôi muốn thấy công nghệ của dự án nhóm theo loại, để nắm nhanh bức tranh kỹ thuật._
+
 - GIVEN dự án có 12 hạng mục công nghệ
 - WHEN tôi mở tab Tech Stack
 - THEN các hạng mục hiển thị theo 5 nhóm (Ngôn ngữ, Framework, Database, Cache, Cloud) kèm tên, phiên bản, ghi chú, người và thời điểm sửa cuối
@@ -340,7 +362,8 @@
 - THEN hiển thị trạng thái rỗng `MSG-INF-031` kèm nút "Thêm hạng mục" (nếu tôi có quyền ghi)
 
 **US-023 — Thêm và sửa hạng mục công nghệ** · Must · SCR-PRJ-23 · `MSG-BIZ-010`
-*Là Dev, tôi muốn khai báo công nghệ và phiên bản dự án đang dùng, để khi có CVE mọi người tra ra ngay.*
+_Là Dev, tôi muốn khai báo công nghệ và phiên bản dự án đang dùng, để khi có CVE mọi người tra ra ngay._
+
 - GIVEN tôi là thành viên dự án và đang ở tab Tech Stack
 - WHEN tôi bấm "Thêm hạng mục", chọn loại Framework, nhập "Spring Boot" phiên bản "3.2.1" và lưu
 - THEN popup đóng, bảng làm mới, hạng mục xuất hiện trong nhóm Framework
@@ -348,7 +371,8 @@
 - THEN hiển thị `MSG-BIZ-010` inline dưới ô Tên công nghệ (so sánh không phân biệt hoa/thường)
 
 **US-024 — Gỡ hạng mục công nghệ** · Should · SCR-PRJ-22 · `MSG-BIZ-011`
-*Là Dev, tôi muốn gỡ công nghệ không còn dùng, để dữ liệu phản ánh đúng hiện trạng.*
+_Là Dev, tôi muốn gỡ công nghệ không còn dùng, để dữ liệu phản ánh đúng hiện trạng._
+
 - GIVEN tôi là thành viên dự án
 - WHEN tôi bấm biểu tượng xóa trên một dòng
 - THEN hiện hộp thoại xác nhận `MSG-INF-010`; xác nhận thì hạng mục bị gỡ
@@ -359,7 +383,8 @@
 ### FE-09 — Ghi nhận lỗ hổng
 
 **US-025 — Ghi nhận một CVE mới** · Must · SCR-SEC-11 · `MSG-VAL-020`, `MSG-BIZ-030`
-*Là kỹ sư, tôi muốn ghi nhận lỗ hổng vừa phát hiện, để nó được theo dõi thay vì nằm trong email.*
+_Là kỹ sư, tôi muốn ghi nhận lỗ hổng vừa phát hiện, để nó được theo dõi thay vì nằm trong email._
+
 - GIVEN tôi là thành viên dự án `PAYGW`
 - WHEN tôi nhập `CVE-2024-12345`, thư viện "log4j-core", phiên bản "2.14.1", mức Critical, khuyến nghị "Nâng lên 2.17.1 trở lên" và lưu
 - THEN bản ghi được tạo với trạng thái "Mới", một dòng lịch sử đầu tiên được ghi, và tôi thấy màn chi tiết
@@ -369,7 +394,8 @@
 - THEN hiển thị `MSG-BIZ-030` kèm liên kết tới bản ghi đã có
 
 **US-026 — Ghi nhận từ ngữ cảnh dự án** · Should · SCR-PRJ-24 · `MSG-BIZ-032`
-*Là kỹ sư, tôi muốn ghi nhận lỗ hổng ngay từ tab Bảo mật của dự án, để không phải chọn lại dự án.*
+_Là kỹ sư, tôi muốn ghi nhận lỗ hổng ngay từ tab Bảo mật của dự án, để không phải chọn lại dự án._
+
 - GIVEN tôi đang ở tab Bảo mật của dự án `PAYGW`
 - WHEN tôi bấm "Ghi nhận lỗ hổng"
 - THEN màn tạo mở ra với trường Dự án đã điền sẵn `PAYGW` và ở chế độ chỉ đọc
@@ -380,7 +406,8 @@
 ### FE-10 — Luồng xử lý lỗ hổng
 
 **US-027 — Chuyển trạng thái theo luồng hợp lệ** · Must · SCR-SEC-11 · `MSG-BIZ-040`
-*Là người phụ trách, tôi muốn cập nhật tiến độ xử lý lỗ hổng, để mọi người biết việc đang tới đâu.*
+_Là người phụ trách, tôi muốn cập nhật tiến độ xử lý lỗ hổng, để mọi người biết việc đang tới đâu._
+
 - GIVEN lỗ hổng đang ở trạng thái "Mới"
 - WHEN tôi bấm "Chuyển trạng thái"
 - THEN chỉ các trạng thái đích hợp lệ theo sơ đồ BU §5.1 xuất hiện — "Mới" không bao giờ là lựa chọn
@@ -388,7 +415,8 @@
 - THEN hiển thị `MSG-VAL-033` và chặn xác nhận
 
 **US-028 — Đóng lỗ hổng bằng cách xử lý** · Must · SCR-SEC-11 · `MSG-VAL-030`, `MSG-VAL-031`, `MSG-INF-020`
-*Là người phụ trách, tôi muốn ghi lại cách mình đã xử lý lỗ hổng, để lần sau gặp lại có căn cứ.*
+_Là người phụ trách, tôi muốn ghi lại cách mình đã xử lý lỗ hổng, để lần sau gặp lại có căn cứ._
+
 - GIVEN lỗ hổng đang "Đang xử lý", ngày ghi nhận 01/08/2026
 - WHEN tôi chọn "Đã xử lý", nhập ngày 20/08/2026 và ghi chú "Đã nâng log4j lên 2.17.1"
 - THEN trạng thái được cập nhật, một dòng lịch sử được ghi, và hệ thống hiển thị `MSG-INF-020` nhắc cập nhật phiên bản trong tab Tech Stack kèm liên kết
@@ -398,7 +426,8 @@
 - THEN hiển thị `MSG-VAL-031` và chặn
 
 **US-029 — Chấp nhận rủi ro có kiểm soát** · Must · SCR-SEC-11 · `MSG-VAL-032`, `MSG-AUTH-006`
-*Là chủ hệ thống, tôi muốn rủi ro nghiêm trọng chỉ được chấp nhận bởi quản trị viên và luôn có lý do, để không ai âm thầm đóng sổ một lỗ hổng lớn.*
+_Là chủ hệ thống, tôi muốn rủi ro nghiêm trọng chỉ được chấp nhận bởi quản trị viên và luôn có lý do, để không ai âm thầm đóng sổ một lỗ hổng lớn._
+
 - GIVEN lỗ hổng mức Medium và tôi là thành viên dự án
 - WHEN tôi chọn "Chấp nhận rủi ro" và nhập lý do
 - THEN trạng thái được cập nhật cùng lý do và một dòng lịch sử
@@ -409,7 +438,8 @@
 - THEN "Chấp nhận rủi ro" hiển thị nhưng **bị vô hiệu hóa** kèm tooltip giải thích; gọi API trực tiếp trả `MSG-AUTH-006`
 
 **US-030 — Xem lịch sử xử lý** · Should · SCR-SEC-11
-*Là quản lý, tôi muốn xem ai đã chuyển trạng thái gì và vì sao, để truy vết trách nhiệm khi cần.*
+_Là quản lý, tôi muốn xem ai đã chuyển trạng thái gì và vì sao, để truy vết trách nhiệm khi cần._
+
 - GIVEN lỗ hổng đã qua 3 lần chuyển trạng thái
 - WHEN tôi mở phần "Lịch sử xử lý" ở màn chi tiết
 - THEN tôi thấy 4 dòng (gồm dòng ghi nhận ban đầu) theo thứ tự mới nhất trước, mỗi dòng có trạng thái cũ → mới, người thực hiện, thời điểm và ghi chú
@@ -419,7 +449,8 @@
 ### FE-11 — Danh sách lỗ hổng
 
 **US-031 — Lọc lỗ hổng toàn hệ thống** · Must · SCR-SEC-10
-*Là quản lý kỹ thuật, tôi muốn lọc mọi lỗ hổng Critical còn mở của toàn tổ chức, để biết cần thúc dự án nào trước.*
+_Là quản lý kỹ thuật, tôi muốn lọc mọi lỗ hổng Critical còn mở của toàn tổ chức, để biết cần thúc dự án nào trước._
+
 - GIVEN hệ thống có 5.000 bản ghi lỗ hổng
 - WHEN tôi chọn mức = Critical và trạng thái = Mới + Đang xử lý
 - THEN danh sách hiển thị đúng tập kết quả, sắp xếp mặc định theo số ngày còn mở giảm dần, phân trang 20 dòng, tổng số kết quả hiển thị rõ
@@ -427,7 +458,8 @@
 - THEN mở màn chi tiết; bấm quay lại giữ nguyên bộ lọc và số trang
 
 **US-032 — Gom nhóm theo CVE** · Should · SCR-SEC-10
-*Là quản lý kỹ thuật, tôi muốn thấy một CVE ảnh hưởng bao nhiêu dự án, để ưu tiên xử lý theo diện rộng.*
+_Là quản lý kỹ thuật, tôi muốn thấy một CVE ảnh hưởng bao nhiêu dự án, để ưu tiên xử lý theo diện rộng._
+
 - GIVEN `CVE-2024-12345` được ghi nhận ở 7 dự án
 - WHEN tôi bật chế độ "Gom nhóm theo CVE"
 - THEN danh sách hiển thị một dòng cho CVE đó với số dự án bị ảnh hưởng và phân bố trạng thái xử lý
@@ -437,7 +469,8 @@
 ### FE-12 — Dashboard
 
 **US-033 — Nắm tình hình trong một màn** · Must · SCR-DASH-10 · `MSG-INF-042`
-*Là quản lý kỹ thuật, tôi muốn một màn tổng quan, để không phải tổng hợp thủ công từ nhiều nguồn.*
+_Là quản lý kỹ thuật, tôi muốn một màn tổng quan, để không phải tổng hợp thủ công từ nhiều nguồn._
+
 - GIVEN tôi vừa đăng nhập
 - WHEN Dashboard tải xong
 - THEN tôi thấy ô cảnh báo (số lỗ hổng Critical còn mở, số lỗ hổng quá hạn 30 ngày), thống kê dự án theo trạng thái, phân bố công nghệ, và lỗ hổng theo mức × trạng thái
@@ -453,7 +486,8 @@
 ### FE-13 — Kết xuất CSV
 
 **US-034 — Kết xuất danh sách ra CSV** · Should · SCR-SEC-10, SCR-PRJ-10 · `MSG-BIZ-070`, `MSG-BIZ-071`
-*Là quản lý, tôi muốn tải danh sách đang lọc ra CSV, để đưa vào báo cáo tháng.*
+_Là quản lý, tôi muốn tải danh sách đang lọc ra CSV, để đưa vào báo cáo tháng._
+
 - GIVEN tôi đã lọc danh sách lỗ hổng còn 320 kết quả và đang xem trang 1
 - WHEN tôi bấm "Kết xuất CSV"
 - THEN tệp tải về chứa đủ **320 dòng** (không phải 20 dòng của trang hiện tại), tên tệp dạng `vulnerabilities_YYYYMMDD_HHMMSS.csv`
@@ -466,23 +500,23 @@
 
 ## 4. Thứ tự phát triển đề xuất
 
-| Đợt | Nội dung | Lý do |
-|---|---|---|
-| 1 | FE-01, FE-02, FE-03, FE-04 | Không có xác thực và phân quyền thì không kiểm thử được gì khác |
-| 2 | FE-05, FE-06, FE-07 | Project là gốc của mọi dữ liệu còn lại |
-| 3 | FE-08 | Tech Stack phụ thuộc Project |
-| 4 | FE-09, FE-10, FE-11 | Khối giá trị chính; phụ thuộc Project và tài khoản |
-| 5 | FE-12, FE-13 | Chỉ có ý nghĩa khi đã có dữ liệu thật |
+| Đợt | Nội dung                   | Lý do                                                           |
+| --- | -------------------------- | --------------------------------------------------------------- |
+| 1   | FE-01, FE-02, FE-03, FE-04 | Không có xác thực và phân quyền thì không kiểm thử được gì khác |
+| 2   | FE-05, FE-06, FE-07        | Project là gốc của mọi dữ liệu còn lại                          |
+| 3   | FE-08                      | Tech Stack phụ thuộc Project                                    |
+| 4   | FE-09, FE-10, FE-11        | Khối giá trị chính; phụ thuộc Project và tài khoản              |
+| 5   | FE-12, FE-13               | Chỉ có ý nghĩa khi đã có dữ liệu thật                           |
 
 ## 5. Traceability tóm tắt
 
-| Epic | Use cases | Screens | Entities chính | Stories |
-|------|-----------|---------|-----------------|---------|
-| EP-01 | UC-AUTH-01/02/03, UC-ADM-01/02 | SCR-AUTH-10/11, SCR-ADM-10/11 | User | US-001..012 |
-| EP-02 | UC-PRJ-01..04 | SCR-PRJ-10/11/20/21 | Project, Repository, ProjectMember | US-013..021 |
-| EP-03 | UC-TS-01/02 | SCR-PRJ-22/23 | TechStackItem | US-022..024 |
-| EP-04 | UC-SEC-01..04 | SCR-SEC-10/11, SCR-PRJ-24 | Vulnerability, VulnerabilityStatusHistory | US-025..032 |
-| EP-05 | UC-DASH-01 | SCR-DASH-10 | (tổng hợp từ tất cả) | US-033 |
-| EP-06 | UC-PRJ-05, UC-SEC-05 | SCR-PRJ-10, SCR-SEC-10 | Project, Vulnerability | US-034 |
+| Epic  | Use cases                      | Screens                       | Entities chính                            | Stories     |
+| ----- | ------------------------------ | ----------------------------- | ----------------------------------------- | ----------- |
+| EP-01 | UC-AUTH-01/02/03, UC-ADM-01/02 | SCR-AUTH-10/11, SCR-ADM-10/11 | User                                      | US-001..012 |
+| EP-02 | UC-PRJ-01..04                  | SCR-PRJ-10/11/20/21           | Project, Repository, ProjectMember        | US-013..021 |
+| EP-03 | UC-TS-01/02                    | SCR-PRJ-22/23                 | TechStackItem                             | US-022..024 |
+| EP-04 | UC-SEC-01..04                  | SCR-SEC-10/11, SCR-PRJ-24     | Vulnerability, VulnerabilityStatusHistory | US-025..032 |
+| EP-05 | UC-DASH-01                     | SCR-DASH-10                   | (tổng hợp từ tất cả)                      | US-033      |
+| EP-06 | UC-PRJ-05, UC-SEC-05           | SCR-PRJ-10, SCR-SEC-10        | Project, Vulnerability                    | US-034      |
 
 **Last Updated**: 2026-08-26
